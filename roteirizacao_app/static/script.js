@@ -84,7 +84,7 @@ function adicionarMarcador(localizacao, endereco) {
             map: mapa,
             title: endereco,
             animation: google.maps.Animation.DROP,
-            label: numeroMarcador.toString(), // Adiciona a numeração ao marcador
+            label: (marcadores.length + 1).toString(), // Adiciona a numeração ao marcador
         });
 
         marker.setAnimation(google.maps.Animation.DROP);
@@ -185,4 +185,123 @@ async function obterSugestoesEndereco(input) {
     });
 }
 
-// Restante do seu código...
+// Adicione a função calcularRota ao escopo global
+window.calcularRota = function () {
+    var directionsService = new google.maps.DirectionsService();
+
+    // Criar array de waypoints a partir dos marcadores
+    var waypoints = marcadores.map(function (marcador) {
+        return {
+            location: marcador.position,
+            stopover: true
+        };
+    });
+
+    var request = {
+        origin: marcadores[0].position,
+        destination: marcadores[marcadores.length - 1].position,
+        waypoints: waypoints,
+        optimizeWaypoints: true,
+        travelMode: google.maps.TravelMode.DRIVING
+    };
+
+    directionsService.route(request, function (result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            var directionsRenderer = new google.maps.DirectionsRenderer({
+                map: mapa,
+                directions: result
+            });
+
+            // Atualizar a tabela com a sequência otimizada
+            atualizarTabelaSequencia(result);
+
+            // Adicionar os endereços otimizados à nova tabela
+            // adicionarEnderecosOtimizados(result);
+
+            // Exemplo de uso
+            var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
+            console.log(valoresTabelaEnderecos);
+
+        } else {
+            alert('Não foi possível calcular a rota: ' + status);
+        }
+    });
+};
+
+function adicionarEnderecosOtimizados(directionsResult) {
+    var ordemOtimizada = directionsResult.routes[0].waypoint_order;
+    var tabelaOtimizada = document.getElementById('tabela-enderecos-otimizada');
+
+    for (var i = 0; i < ordemOtimizada.length; i++) {
+        var index = ordemOtimizada[i];
+        var endereco = marcadores[index].title;
+        var idEndereco = marcadores[index].id;
+        
+        // Adicionar entrada à tabela otimizada
+        adicionarEntradaTabelaOtimizada(i + 1, endereco);
+    }
+}
+
+function adicionarEntradaTabelaOtimizada(numero, endereco) {
+    var tabelaOtimizada = document.getElementById('tabela-enderecos-otimizada');
+    var novaLinha = tabelaOtimizada.insertRow(-1);
+    var celulaNumero = novaLinha.insertCell(0);
+    var celulaEndereco = novaLinha.insertCell(1);
+    var celulaSequencia = novaLinha.insertCell(2);
+
+    celulaNumero.innerHTML = numero;
+    celulaEndereco.innerHTML = endereco;
+    celulaSequencia.innerHTML = numero; // Sequência começa em 1
+
+    // Adicionar o ID do endereço como um atributo personalizado da linha
+    // novaLinha.setAttribute('data-id-endereco', idEndereco);
+}
+
+
+
+function atualizarTabelaSequencia(directionsResult) {
+    // Verificar se a resposta possui rotas e se há uma ordem otimizada de waypoints
+    if (directionsResult.routes && directionsResult.routes.length > 0 && directionsResult.routes[0].waypoint_order) {
+        var ordemOtimizada = directionsResult.routes[0].waypoint_order;
+
+        // Obter os valores da tabela de endereços
+        var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
+
+        
+
+        // Atualizar a tabela com a sequência otimizada
+        var tabelaEnderecosOtimizada = document.getElementById('tabela-enderecos-otimizada');
+        for (var i = 0; i < ordemOtimizada.length; i++) {
+            var index = ordemOtimizada[i];
+            var row = tabelaEnderecosOtimizada.insertRow(-1);
+            var cellIdEndereco = row.insertCell(0);
+            var cellEndereco = row.insertCell(1);
+            var cellSequencia = row.insertCell(2);
+
+            cellIdEndereco.innerHTML = valoresTabelaEnderecos[index].idEndereco;
+            cellEndereco.innerHTML = valoresTabelaEnderecos[index].endereco;
+            cellSequencia.innerHTML = i + 1; // Sequência começa em 1
+        }
+    } else {
+        console.error('Não foi possível obter a ordem otimizada dos waypoints na resposta da API.');
+        return;
+    }
+}
+
+function obterValoresTabelaEnderecos() {
+    var tabelaEnderecos = document.getElementById('tabela-enderecos');
+    var valores = [];
+
+    for (var i = 1; i < tabelaEnderecos.rows.length; i++) {
+        var row = tabelaEnderecos.rows[i];
+        var idEndereco = row.cells[0].innerHTML;
+        var endereco = row.cells[1].innerHTML;
+
+        valores.push({
+            idEndereco: idEndereco,
+            endereco: endereco
+        });
+    }
+
+    return valores;
+}

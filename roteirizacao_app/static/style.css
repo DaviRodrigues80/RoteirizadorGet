@@ -13,7 +13,7 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 
 a {
@@ -37,7 +37,7 @@ a:hover {
     top: 10px;
     left: 10px;
     z-index: 1;
-    background-color: rgb(95, 95, 96);
+    background-color: rgba(95, 95, 96, 0.523);
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -46,9 +46,9 @@ a:hover {
 #tabela-dinamica {
     position: absolute;
     top: 50px;
-    left: 10px; /* Ajuste a posição à esquerda conforme necessário */
+    left: 0px; /* Ajuste a posição à esquerda conforme necessário */
     z-index: 1;
-    background-color: rgba(141, 142, 143, 0.418);
+    background-color: rgba(141, 142, 143, 0.712);
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -56,7 +56,23 @@ a:hover {
     overflow-y: auto;
     overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
     width: calc(100% - 20px); /* Leva em consideração o padding de 10px em cada lado */
-    margin-top: 10px;
+    margin-top: 50px;
+}
+
+#tabela-otimizada {
+    position: absolute;
+    top: 50px;
+    left: 0px; /* Ajuste a posição à esquerda conforme necessário */
+    z-index: 1;
+    background-color: rgba(141, 142, 143, 0.759);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
+    width: calc(100% - 20px); /* Leva em consideração o padding de 10px em cada lado */
+    margin-top: 400px;
 }
 
 #tabela-enderecos {
@@ -72,9 +88,21 @@ a:hover {
     color: #090382;
 }
 
+#tabela-otimizada th, #tabela-otimizada td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    color: #090382;
+}
+
 #tabela-enderecos th {
     background-color: #4caf4f4d;
-    color: rgb(83, 85, 253);
+    color: rgb(25, 26, 74);
+}
+
+#tabela-otimizada th {
+    background-color: #4caf4f4d;
+    color: rgb(25, 26, 74);
 }
 
 .input-group {

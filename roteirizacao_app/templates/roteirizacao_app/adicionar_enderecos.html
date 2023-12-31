@@ -16,19 +16,36 @@
             {% csrf_token %}
             <div class="input-group">
                 <input type="text" id="id_endereco" name="endereco" placeholder="Informe o endereço com o numero" required>    
-                <button type="button" onclick="buscarEndereco()">Buscar</button>
+                <button type="button" onclick="calcularRota()">Otimizar Rota</button>
+                <button type="button" onclick="atualizarTabelaSequencia()">Atualizar Tabela</button>
                 <div id="tabela-dinamica">
-                    <h2>Viagem</h2>
+                    <h2>Paradas</h2>
                     <table border="1" id="tabela-enderecos">
                         <tr>
                             <th>ID</th>
                             <th>Endereço</th>
+                            
                         </tr>
+                        
                     </table>
+                    
                 </div>
 
             </div>
         </form>
+
+        <!-- Adicione uma nova div para a tabela de endereços otimizados -->
+        <div id="tabela-otimizada" class="tabela-dinamica">
+            <h2>Paradas Otimizada</h2>
+            <table border="1" id="tabela-enderecos-otimizada">
+                <tr>
+                    <th>ID</th>
+                    <th>Endereço</th>
+                    <th>Parada</th>
+                    
+                </tr>
+            </table>
+        </div>
     </div>
     
     <script src="{% static 'script.js' %}"></script>
