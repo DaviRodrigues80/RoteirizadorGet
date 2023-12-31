@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Endereços</title>
+    
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    
+
+    <div>
+     <input type="text" id="endereco" placeholder="Digite o endereço">
+     <button onclick="buscarEndereco()">Buscar</button>   
+    </div>
+    
+   
+    
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAl4N-KtLVFhvzJ6MuDua1CbN0LJSEBH1U&libraries=places&callback=initMap">
+    </script>
+    <script>
+      function buscarEndereco() {
+  // Obtém o valor digitado no campo de endereço
+  var enderecoInput = document.getElementById("endereco").value;
+
+  // Carrega a API de Autocompletar
+  var autocomplete = new google.maps.places.Autocomplete(document.getElementById("endereco"));
+
+  // Adiciona um observador para a propriedade "value" do campo de endereço
+  enderecoInput.addEventListener("input", function () {
+    // Obtém as sugestões de endereço
+    autocomplete.getPlacePredictions(
+      {
+        input: enderecoInput.value,
+        componentRestrictions: { country: "BR" }, // Restringe as sugestões para o Brasil
+      },
+      function (predictions, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK && predictions.length > 0) {
+          // Exibe as sugestões ao usuário
+          var sugestoesDiv = document.getElementById("sugestoes");
+          sugestoesDiv.innerHTML = ""; // Limpa a lista anterior
+
+          predictions.forEach(function (prediction) {
+            var sugestaoItem = document.createElement("div");
+            sugestaoItem.innerText = prediction.description;
+            sugestaoItem.classList.add("sugestao-item");
+
+            // Adiciona um evento de clique para preencher o formulário com a sugestão selecionada
+            sugestaoItem.addEventListener("click", function () {
+              console.log("Selecionada a sugestão: " + prediction.description);
+              document.getElementById("endereco").value = prediction.description;
+            });
+
+            sugestoesDiv.appendChild(sugestaoItem);
+          });
+
+          sugestoesDiv.style.display = "block";
+        }
+      }
+    );
+
+    // Adiciona um log para depuração
+    console.log("Valor do campo de endereço: " + enderecoInput.value);
+  });
+}
+    
+</script>
+
+
+    <h1>Lista de Endereços</h1>
+    <table border="1">
+        <tr>
+            <th>CEP</th>
+            <th>Rua</th>
+            <th>Número</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+        </tr>
+        {% for endereco in enderecos %}
+        <tr>
+            <td>{{ endereco.cep }}</td>
+            <td>{{ endereco.rua }}</td>
+            <td>{{ endereco.numero }}</td>
+            <td>{{ endereco.latitude }}</td>
+            <td>{{ endereco.longitude }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{% url 'adicionar_endereco' %}">Adicionar Endereço</a>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteirizador GET</title>
+    <script src="{% static 'script.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div id="mapa"></div>
+    <div id="sugestoes-lista"></div>
+    <div id="form-container">
+        <form method="post" action="{% url 'adicionar_endereco' %}" id="formulario-endereco">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" id="id_endereco" name="endereco" placeholder="Informe o endereço com o numero" required>    
+                <button type="button" onclick="buscarEndereco()">Buscar</button>
+                
+
+            </div>
+        </form>
+    </div>
+    <div id="tabela-dinamica">
+        <h2>Viagem</h2>
+        <table border="1" id="tabela-enderecos">
+            <tr>
+                <th>ID</th>
+                <th>Endereço</th>
+            </tr>
+        </table>
+    </div>
+    <script src="{% static 'script.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAl4N-KtLVFhvzJ6MuDua1CbN0LJSEBH1U&libraries=places&callback=initMap" async defer></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #2c3e50;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+.table-section {
+    background-color: #bbc3cb65;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+a {
+    color: #3498db;
+}
+
+a:hover {
+    color: #2980b9;
+}
+
+
+#mapa {
+    height: 100vh; /* Altura ocupando a tela inteira */
+    width: 100%;  /* Largura ocupando toda a largura disponível */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#form-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    background-color: rgb(95, 95, 96);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#tabela-dinamica {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    background-color: rgba(141, 142, 143, 0.418);
+    padding: 10px;
+    border-radius: 10px; /* Reduzi o raio da borda para ficar mais suave */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 300px; /* Altura máxima da tabela */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
+}
+
+#tabela-enderecos {
+    width: 100%; /* Faz a tabela ocupar 100% da largura disponível */
+    border-collapse: collapse;
+    margin-top: 10px; /* Adiciona um espaço entre a tabela e o título */
+}
+
+#tabela-enderecos th, #tabela-enderecos td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    color: #090382;
+}
+
+#tabela-enderecos th {
+    background-color: #4caf4f4d;
+    color: rgb(83, 85, 253);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column; /* Altera a direção para coluna */
+    align-items: flex-start; /* Alinha os itens à esquerda */
+}
+
+#id_endereco {
+    width: 300px; /* Ajuste o tamanho conforme necessário */
+    box-sizing: border-box; /* Inclui padding e borda no tamanho total */
+}
