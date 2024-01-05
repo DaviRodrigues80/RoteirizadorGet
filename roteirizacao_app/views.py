@@ -1,50 +1,30 @@
+import html
+import json
+from urllib import request
+from bs4 import BeautifulSoup
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from .models import Endereco
+import soupsieve
+from .models import Endereco, Viagem
 from .forms import EnderecoForm
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.platypus import Table, TableStyle
+from io import BytesIO
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt  # Importe o decorador CSRF
+from django.template.loader import render_to_string
+
 
 def lista_enderecos(request):
     enderecos = Endereco.objects.all()
-    return render(request, 'roteirizacao_app/lista_enderecos.html', {'enderecos': enderecos})
-
-def buscar_cep(request):
-    if request.method == 'POST':
-        cep = request.POST.get('cep')
-        numero = request.POST.get('numero')
-
-        # Verifica se o CEP e número já existem no banco de dados
-        endereco = Endereco.objects.filter(cep=cep, numero=numero).first()
-
-        if endereco:
-            data = {
-                'rua': endereco.rua,
-                'numero':endereco.numero,
-                'latitude': endereco.latitude,
-                'longitude': endereco.longitude,
-                'bairro': endereco.bairro,
-                'cidade': endereco.cidade,
-            }
-            return JsonResponse(data)
-        else:
-            # Se o endereço não existir no banco, faz a requisição à API VIA CEP
-            url = f'https://viacep.com.br/ws/{cep}/json/'
-            response = RequestContext.get(url)
-            data = response.json()
-
-            if 'erro' not in data:
-                # Se a API retornar dados válidos, preenche os campos do formulário
-                data_to_return = {
-                    'rua': data.get('logradouro', ''),
-                    'numero':data.get('numero', ''),
-                    'latitude':data.get('latitude', ''),
-                    'longitude':data.get('longitude', ''),
-                    'bairro': data.get('bairro', ''),
-                    'cidade': data.get('localidade', ''),
-                }
-                return JsonResponse(data_to_return)
-
-    return JsonResponse({'error': 'Método não permitido'})
+    return render(request, 'lista_enderecos.html', {'enderecos': enderecos})
 
 def adicionar_endereco(request):
     if request.method == 'POST':
@@ -61,8 +41,66 @@ def adicionar_endereco(request):
     else:
         form = EnderecoForm()
 
-    return render(request, 'roteirizacao_app/adicionar_enderecos.html', {'form': form})
+    return render(request, 'adicionar_enderecos.html', {'form': form})
 
-def lista_enderecos_temporarios(request):
-    enderecos_temporarios = request.session.get('enderecos_temporarios', [])
-    return render(request, 'roteirizacao_app/lista_enderecos.html', {'enderecos_temporarios': enderecos_temporarios})
+def imprimir_rota(request):
+    if request.method == "POST":
+        # Supondo que você esteja recebendo HTML como parte da requisição POST
+        html = request.POST.get('html', '')
+
+        # Use BeautifulSoup para analisar o HTML
+        soup = BeautifulSoup(html, 'html.parser')
+
+        # Encontre o texto dentro da tag h1
+        texto_h1 = soup.find('h1').string if soup.find('h1') else "H1 não encontrado"
+
+        # Imprima o valor no terminal (para verificar no console)
+        print(f"O valor da variável texto_h1 é: {texto_h1}")
+
+        # Retorne a resposta renderizada com o texto_h1 como contexto
+        return render(request, 'imprimir_rota.html', {'texto_h1': texto_h1})
+    else:
+        # Se a requisição não for POST, renderize a página normalmente
+        return render(request, 'imprimir_rota.html')
+
+
+def obter_numero_viagem_atual():
+    # Obtenha o último número de viagem salvo no banco de dados
+    ultima_viagem = Viagem.objects.order_by('-numero_viagem').first()
+
+    if ultima_viagem:
+        numero_viagem = ultima_viagem.numero_viagem + 1
+    else:
+        numero_viagem = 1
+
+    return numero_viagem
+
+def salvar_endereco(valor):
+    # Verifique se o endereço já existe no banco de dados
+    endereco_existente = Endereco.objects.filter(CEP=valor['CEP'], numero=valor['numero']).first()
+
+    if not endereco_existente:
+        # Salve o endereço se não existir
+        Endereco.objects.create(
+            CEP=valor['CEP'],
+            LOGRADOURO=valor['logradouro'],
+            NUMERO=valor['numero'],
+            LATITUDE=valor['latitude'],
+            LONGITUDE=valor['longitude'],
+            BAIRRO=valor['bairro'],
+            CIDADE=valor['cidade']
+        )
+
+
+def salvar_viagem(numero_viagem, valor):
+    # Salve a viagem com o número de viagem atual
+    Viagem.objects.create(
+        numero_viagem=numero_viagem,
+        parada=valor['parada'],
+        logradouro=valor['logradouro'],
+        bairro=valor['bairro'],
+        cidade=valor['cidade'],
+        numero=valor['numero'],
+        latitude=valor['latitude'],
+        longitude=valor['longitude']
+    )

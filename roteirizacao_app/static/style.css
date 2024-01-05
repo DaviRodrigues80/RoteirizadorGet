@@ -5,15 +5,52 @@ body {
     margin: 0;
     padding: 0;
 }
-
-.table-section {
-    background-color: #bbc3cb65;
+.menu-superior {
+    list-style: none;
+    padding: 10px; /* Ajuste conforme necessário */
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    background-color: #0b0d4a; /* Cor de fundo do menu */
+    border-bottom: 1px solid #ccc; /* Borda inferior do menu */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
+.menu-superior li {
+    position: relative;
+    z-index: 1000;
+    display: inline;
+    margin: 0;
+    padding: 10px;
+}
+
+.btn-menu {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.btn-menu:hover {
+    background-color: #27AE60;
+}
+
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 30px;
+    border-radius: 30px;
+    border: none;
 }
 
 a {
@@ -27,9 +64,11 @@ a:hover {
 #mapa {
     height: 100vh;
     width: 100%;
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
+    z-index: 1;
+   
 }
 
 #form-container {
@@ -41,74 +80,154 @@ a:hover {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 150px;
 }
 
-#tabela-dinamica {
+#div-enderecos  {
     position: absolute;
     top: 50px;
     left: 0px; /* Ajuste a posição à esquerda conforme necessário */
     z-index: 1;
-    background-color: rgba(141, 142, 143, 0.712);
+    background-color: rgba(149, 149, 149);
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-height: 300px;
+    max-height: 250px;
     overflow-y: auto;
     overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
     width: calc(100% - 20px); /* Leva em consideração o padding de 10px em cada lado */
     margin-top: 50px;
 }
 
-#tabela-otimizada {
+#div-otimizada {
     position: absolute;
     top: 50px;
     left: 0px; /* Ajuste a posição à esquerda conforme necessário */
     z-index: 1;
-    background-color: rgba(141, 142, 143, 0.759);
+    background-color: rgb(149, 149, 149);
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-height: 300px;
+    max-height: 250px;
     overflow-y: auto;
     overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
     width: calc(100% - 20px); /* Leva em consideração o padding de 10px em cada lado */
-    margin-top: 400px;
+    margin-top: 325px;
 }
 
-#tabela-enderecos {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 5px;
-}
 
-#tabela-enderecos th, #tabela-enderecos td {
-    border: 1px solid #ddd;
+
+#tabela-enderecos td {
+    border: 1px solid #ffffff;
     padding: 8px;
     text-align: left;
     color: #090382;
+    border-radius: 30px;
+    border: none;
+    font-size: 12px;
 }
 
-#tabela-otimizada th, #tabela-otimizada td {
-    border: 1px solid #ddd;
+#tabela-otimizada td {
+    border: 1px solid #000000;
     padding: 8px;
     text-align: left;
-    color: #090382;
+    color: #000000;
+    border-radius: 30px;
+    border: none;
+    font-size: 12px;
+}
+
+
+#tabela-enderecos thead th {
+    position: sticky;
+    top: 0;
+    color: rgb(0, 0, 0);
+    z-index: 2;
+    border: none;
+    font-size: 12px;
+}
+
+#tabela-otimizada thead th {
+    position: sticky;
+    top: 0;
+    color: rgb(255, 255, 255);
+    z-index: 2;
+    border: none;
+    font-size: 12px;
 }
 
 #tabela-enderecos th {
-    background-color: #4caf4f4d;
-    color: rgb(25, 26, 74);
+    background-color: #06ff02c4;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    border: none;
+    
+    
 }
 
 #tabela-otimizada th {
-    background-color: #4caf4f4d;
-    color: rgb(25, 26, 74);
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    border: 1px;
+    
+    
+}
+
+#tabela-enderecos caption {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    background-color: #00000055;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+
+}
+
+#tabela-otimizada caption {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    background-color: #818181;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 5px;
+}
+
+.input-group label {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.input-group button {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.input-group button:hover {
+    background-color: #41b929;
 }
 
 #id_endereco {

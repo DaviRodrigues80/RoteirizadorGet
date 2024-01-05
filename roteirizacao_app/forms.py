@@ -1,10 +1,20 @@
 from django import forms
-from .models import Endereco
+from .models import Endereco, Viagem
 
-# Adicione um campo temporário para o ID
+# Tabela Endereco
 class EnderecoForm(forms.ModelForm):
     id_temporario = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Endereco
-        fields = ['cep', 'rua', 'latitude','longitude', 'bairro', 'cidade', 'numero']
+        fields = ['cep', 'logradouro', 'latitude','longitude', 'bairro', 'cidade', 'numero']
+
+
+
+# Tabela Viagem
+class ViagemForm(forms.ModelForm):
+    
+
+    class Meta:
+        model= Viagem
+        fields =  ['numero_viagem', 'parada', 'lougradouro', 'bairro', 'cidade', 'numero', 'latitude', 'longitude']

@@ -38,7 +38,7 @@ function initMap() {
                 var marker = new google.maps.Marker({
                     position: userLocation,
                     map: mapa,
-                    title: 'Sua Localização'
+                    title: 'Estou Aqui'
                 });
 
                 // Inicializa a função de autocomplete...
@@ -110,7 +110,9 @@ function adicionarMarcador(localizacao, endereco) {
 
         // Adiciona entrada à tabela
         adicionarEntradaTabela(numeroMarcador, endereco);
-
+        var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
+        console.log('linha-114: Enderecos Adicionado:',valoresTabelaEnderecos);
+        
         // Limpa a lista de sugestões
         document.getElementById('sugestoes-lista').innerHTML = '';
     }
@@ -197,13 +199,29 @@ window.calcularRota = function () {
         };
     });
 
-    var request = {
-        origin: marcadores[0].position,
-        destination: marcadores[marcadores.length - 1].position,
-        waypoints: waypoints,
-        optimizeWaypoints: true,
-        travelMode: google.maps.TravelMode.DRIVING
-    };
+    // Verificar se o usuário forneceu um endereço de início
+    var enderecoInicio = document.getElementById('endereco-inicio').value;
+
+    if (enderecoInicio.trim() !== '') {
+        // Se o usuário forneceu um endereço de início, use-o
+        var request = {
+            origin: enderecoInicio,
+            destination: marcadores[marcadores.length - 1].position,
+            waypoints: waypoints,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+    } else {
+
+        // Se o usuário não forneceu um endereço de início, use a localização atual do usuário
+        var request = {
+            origin: marcadores[0].position,
+            destination: marcadores[marcadores.length - 1].position,
+            waypoints: waypoints,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+    }
 
     directionsService.route(request, function (result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
@@ -215,12 +233,11 @@ window.calcularRota = function () {
             // Atualizar a tabela com a sequência otimizada
             atualizarTabelaSequencia(result);
 
-            // Adicionar os endereços otimizados à nova tabela
-            // adicionarEnderecosOtimizados(result);
-
             // Exemplo de uso
             var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
-            console.log(valoresTabelaEnderecos);
+            console.log('linha-238: tabela Enderecos Não Otimizada:',valoresTabelaEnderecos);
+            var ValoresTabelaOtimizada = obterValoresTabelaOtimizada();
+            console.log('linha-240: tabela Enderecos Otimizada:', ValoresTabelaOtimizada);
 
         } else {
             alert('Não foi possível calcular a rota: ' + status);
@@ -231,7 +248,7 @@ window.calcularRota = function () {
 function adicionarEnderecosOtimizados(directionsResult) {
     var ordemOtimizada = directionsResult.routes[0].waypoint_order;
     var tabelaOtimizada = document.getElementById('tabela-enderecos-otimizada');
-
+    console.log(tabelaOtimizada)
     for (var i = 0; i < ordemOtimizada.length; i++) {
         var index = ordemOtimizada[i];
         var endereco = marcadores[index].title;
@@ -239,7 +256,27 @@ function adicionarEnderecosOtimizados(directionsResult) {
         
         // Adicionar entrada à tabela otimizada
         adicionarEntradaTabelaOtimizada(i + 1, endereco);
+
+        // Atualizar o marcador existente com nova posição e rótulo
+        atualizarMarcador(marcadores[index], i + 1, idEndereco);
     }
+}
+
+function atualizarMarcador(marker, numero, endereco) {
+    // Atualizar posição do marcador
+    marker.setPosition(marker.position);
+
+    // Atualizar rótulo do marcador
+    marker.setLabel(numero.toString());
+
+    // Adicionar uma janela de informações atualizada
+    var infoWindow = new google.maps.InfoWindow({
+        content: 'Marcador #' + numero + '<br>Endereço: ' + endereco
+    });
+
+    marker.addListener('click', function () {
+        infoWindow.open(mapa, marker);
+    });
 }
 
 function adicionarEntradaTabelaOtimizada(numero, endereco) {
@@ -270,7 +307,8 @@ function atualizarTabelaSequencia(directionsResult) {
         
 
         // Atualizar a tabela com a sequência otimizada
-        var tabelaEnderecosOtimizada = document.getElementById('tabela-enderecos-otimizada');
+        var tabelaEnderecosOtimizada = document.getElementById('tabela-otimizada');
+        
         for (var i = 0; i < ordemOtimizada.length; i++) {
             var index = ordemOtimizada[i];
             var row = tabelaEnderecosOtimizada.insertRow(-1);
@@ -304,4 +342,111 @@ function obterValoresTabelaEnderecos() {
     }
 
     return valores;
+}
+
+
+function obterValoresTabelaOtimizada() {
+    var tabelaOtimizada = document.getElementById('tabela-otimizada');
+    var valores = [];
+
+    for (var i = 1; i < tabelaOtimizada.rows.length; i++) {
+        var row = tabelaOtimizada.rows[i];
+        var idEndereco = row.cells[0].innerHTML;
+        var endereco = row.cells[1].innerHTML;
+        var parada = row.cells[2].innerHTML;
+
+        valores.push({
+            idEndereco: idEndereco,
+            endereco: endereco,
+            parada: parada
+        });
+    }
+    
+    return valores;
+}
+
+function imprimirRota() {
+    // Obtenha a referência à div
+    var tabela = obterValoresTabelaOtimizada();
+    var quant_parada = tabela.length
+    console.log(quant_parada)
+    console.log(tabela);
+
+    // Inicie a string HTML com o cabeçalho da tabela
+    var htmlTabela = `
+        <table border="1" id="tabela-otimizada" name="tabela-otimizada" style="color: black;">
+            <caption>Paradas Otimizada</caption>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Endereço</th>
+                    <th>Parada</th>
+                </tr>
+            </thead>
+
+            <tbody>
+    `;
+
+    // Adicione linhas à string HTML com base nos valores da tabela
+    for (var i = 0; i < quant_parada; i++) {
+        var idEndereco = tabela[i].idEndereco;
+        var endereco = tabela[i].endereco;
+        var parada = tabela[i].parada;
+
+        // Adicione cada linha à string HTML
+        htmlTabela += `
+            <tr>
+                <td>${idEndereco}</td>
+                <td>${endereco}</td>
+                <td>${parada}</td>
+                
+            </tr>
+        `;
+
+        // Exiba as informações do loop no console
+        console.log(`Loop ${i + 1} - ID: ${idEndereco}, Endereço: ${endereco}, Parada: ${parada}`);
+    }
+
+    // Finalize a string HTML
+    htmlTabela += `
+            </tbody>
+        </table>
+    `;
+
+
+    // Configurações para o PDF
+    var opt = {
+        margin: 1,
+        filename: "Rota.pdf",
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+        fontOptions: {
+            textColor: [0, 0, 0] // Define a cor da fonte como preto (RGB)
+        }
+    };
+
+    // Gere o PDF
+    html2pdf().set(opt).from(htmlTabela).save();
+    // Exiba as informações do loop no console
+    for (var i = 0; i < quant_parada; i++) {
+        console.log(`Loop ${i + 1} - ID: ${idEndereco}, Endereço: ${endereco}, Parada: ${parada}`);
+}
+
+
+
+// Função para obter o valor de um cookie pelo nome
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 }
