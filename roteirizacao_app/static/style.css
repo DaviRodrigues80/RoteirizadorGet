@@ -44,6 +44,42 @@ body {
     background-color: #27AE60;
 }
 
+.resumo {
+    list-style: none;
+    color: #ffffff;
+    padding: 05px; /* Ajuste conforme necessário */
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #686565a1; /* Cor de fundo da div resumo */
+    border: 3px solid #0e17c5; /* Borda inferior da div resumo */
+    width: 60%;
+    position: relative; /* Alterado para relative */
+    top: 130px; /* Ajuste conforme necessário para deixar abaixo do menu-superior */
+    z-index: 1000;
+    border-radius: 10px;
+}
+
+.input-resumo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px; /* Ajuste conforme necessário */
+
+    /* Adiciona negrito aos labels */
+    font-weight: bold;
+}
+
+.input-resumo label {
+    margin-right: 10px; /* Espaçamento entre os labels e os inputs */
+}
+
+.input-resumo input {
+    border-radius: 5px; /* Cantos arredondados nos inputs */
+    padding: 5px; /* Espaçamento interno dos inputs */
+    width: 100px; /* Ajuste conforme necessário */
+}
+
 
 table {
     width: 100%;
@@ -80,7 +116,7 @@ a:hover {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 150px;
+    margin-top: 200px;
 }
 
 #div-enderecos  {

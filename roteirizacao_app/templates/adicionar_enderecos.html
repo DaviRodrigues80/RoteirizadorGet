@@ -17,8 +17,19 @@
         <button type="button" class="btn-menu" onclick="calcularRota()">Otimizar Rota</button>
         <button type="button" class="btn-menu" onclick="salvar_endereco()">Salvar Endereços</button>
         <button type="button" class="btn-menu" onclick="imprimirRota()">Imprimir Rota</button>
-        
     </div>
+        
+    <div class="resumo">
+        <div class="input-resumo">
+            <label>Total de paradas: <span id="spantotalParadas"></span></label>
+            <input type="text" id="totalParadas">
+            <label>Total de KM: <span id="spantotalKm"></span></label>
+            <input type="text" id="totalKm">
+            <label>Tempo previsto: <span id="spantempoPrevisto"></span></label>
+            <input type="text" id="tempoPrevisto">
+        </div>
+    </div>
+    
     
     <div id="mapa"></div>
     <div id="sugestoes-lista"></div>

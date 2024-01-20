@@ -458,6 +458,35 @@ window.calcularRota = function () {
             // Atualizar a tabela com a sequência otimizada
             atualizarTabelaSequencia(result);
 
+            // Calcular a distância total otimizada
+            var distanciaTotalKm = result.routes[0].legs.reduce(function (total, leg) {
+                return total + leg.distance.value;
+            }, 0) / 1000; // Convertendo de metros para quilômetros
+
+            // Obter o tempo previsto total
+            var tempoPrevistoTotal = result.routes[0].legs.reduce(function (total, leg) {
+                return total + leg.duration.value;
+            }, 0);
+
+            // Converter o tempo previsto total de segundos para minutos
+            var minutos = Math.floor(tempoPrevistoTotal / 60);
+            var segundos = tempoPrevistoTotal % 60;
+
+            // Adicionar um tempo fixo de 8 minutos para cada parada
+            var tempoParadaAdicional = 8; // Ajuste conforme necessário
+
+            // Calcular o tempo total considerando as paradas adicionais
+            var tempoTotalComParadas = tempoPrevistoTotal + (marcadores.length - 1) * tempoParadaAdicional * 60;
+
+            // Converter o tempo total com paradas adicionais de segundos para minutos
+            var minutosComParadas = Math.floor(tempoTotalComParadas / 60);
+            var segundosComParadas = tempoTotalComParadas % 60;
+
+            // Atualizar os valores na interface do usuário
+            document.getElementById('totalKm').value = distanciaTotalKm.toFixed(2);
+            document.getElementById('totalParadas').value = marcadores.length;
+            document.getElementById('tempoPrevisto').value = minutosComParadas + ' min ' + segundosComParadas + ' seg';
+
             // Exemplo de uso
             var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
             var ValoresTabelaOtimizada = obterValoresTabelaOtimizada();
@@ -605,9 +634,25 @@ function obterValoresTabelaOtimizada() {
 }
 
 function imprimirRota() {
+
+    // Obtenha a referência à div resumo
+    var totalParadas = document.getElementById('totalParadas').value;
+    var totalKm = document.getElementById('totalKm').value;
+    var tempoPrevisto = document.getElementById('tempoPrevisto').value;
+
     // Obtenha a referência à div
     var tabela = obterValoresTabelaOtimizada();
     var quant_parada = tabela.length
+
+    // Inicie a string HTML com o cabeçalho do documento
+    var htmlDocumento = `
+        <div>
+            <h1>Roteirizador GET - Resumo da Rota</h1>
+            <p>Total de paradas: ${totalParadas}</p>
+            <p>Total de KM: ${totalKm} km</p>
+            <p>Tempo previsto: ${tempoPrevisto}</p>
+        </div>
+    `;
 
     // Inicie a string HTML com o cabeçalho da tabela
     var htmlTabela = `
@@ -662,7 +707,7 @@ function imprimirRota() {
     };
 
     // Gere o PDF
-    html2pdf().set(opt).from(htmlTabela).save();
+    html2pdf().set(opt).from(htmlDocumento + htmlTabela).save();
     // Exiba as informações do loop no console
     for (var i = 0; i < quant_parada; i++) {
         console.log(`Loop ${i + 1} - ID: ${idEndereco}, Endereço: ${endereco}, Parada: ${parada}`);
@@ -685,3 +730,25 @@ function getCookie(name) {
     }
     return cookieValue;
 }}
+
+// Função para Atualizar Resumo da Rota
+function atualizarResumo() {
+    // Faça uma requisição AJAX para a URL de calcular_resumo
+    $.ajax({
+        url: '/calcular_resumo/',
+        type: 'POST',
+        data: {
+            'endereco': $('input[name="endereco"]').val(),  // Substitua pelo campo real
+            // Adicione outros campos conforme necessário
+        },
+        success: function (data) {
+            // Atualize os valores na interface do usuário
+            $('#totalParadas').text(data.totalParadas);
+            $('#totalKm').text(data.totalKm);
+            $('#tempoPrevisto').text(data.tempoPrevisto);
+        },
+        error: function () {
+            console.log('Erro ao calcular o resumo.');
+        }
+    });
+}
