@@ -76,20 +76,28 @@ function initAutocomplete() {
     }
 }
 
+// Inicialize o contador global
+// var proximoNumeroMarcador = 1;
+
 function adicionarMarcador(localizacao, endereco) {
     if (mapa) {
-        var numeroMarcador = marcadores.length + 1; // Número sequencial do marcador
+        // Obtém o último ID na tabela de endereços
+        var ultimoIdTabela = obterUltimoIdNaTabela();
+
+        // Inicia o próximo número disponível como o maior ID na tabela
+        var numeroMarcador = ultimoIdTabela ? ultimoIdTabela + 1 : 1;
+
         var marker = new google.maps.Marker({
             position: localizacao,
             map: mapa,
             title: endereco,
             animation: google.maps.Animation.DROP,
-            label: (marcadores.length + 1).toString(), // Adiciona a numeração ao marcador
+            label: numeroMarcador.toString(),
+            id: numeroMarcador
         });
 
         marker.setAnimation(google.maps.Animation.DROP);
 
-        // Ou adicione uma janela de informações (info window)
         var infoWindow = new google.maps.InfoWindow({
             content: 'Marcador #' + numeroMarcador + '<br>Endereço: ' + endereco
         });
@@ -98,40 +106,257 @@ function adicionarMarcador(localizacao, endereco) {
             infoWindow.open(mapa, marker);
         });
 
-        // Pode adicionar mais personalizações ao marcador, se necessário
-        // Exemplo: marker.setIcon('caminho/do/ícone.png');
-        // ...
-
-        // Centraliza o mapa na nova localização
         mapa.panTo(localizacao);
 
-        // Adiciona o marcador ao array
         marcadores.push(marker);
 
-        // Adiciona entrada à tabela
+        // Atualiza a variável global para o próximo número de marcador
+        proximoNumeroMarcador = numeroMarcador + 1;
+
+        // Obter números atuais dos marcadores em um array
+        var numerosMarcadoresAtuais = marcadores.map(function(marcador) {
+            return { id: marcador.id, idEndereco: marcador.idEndereco };
+        });
+
+        // Exibir os números dos marcadores no console
+        console.log('linha-117: Números dos Marcadores Atuais:', numerosMarcadoresAtuais);
+
         adicionarEntradaTabela(numeroMarcador, endereco);
         var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
-        console.log('linha-114: Enderecos Adicionado:',valoresTabelaEnderecos);
-        
-        // Limpa a lista de sugestões
+
         document.getElementById('sugestoes-lista').innerHTML = '';
     }
 }
+
+// Função para verificar se um marcador com o ID já existe
+function marcadorComIdExiste(id) {
+    return marcadores.some(function (marcador) {
+        return marcador.id === id;
+    });
+}
+
 
 function limparInputEndereco() {
     document.getElementById('id_endereco').value = '';
     document.getElementById('sugestoes-lista').innerHTML = '';
 }
 
-function adicionarEntradaTabela(numero, endereco) {
-    var tabela = document.getElementById('tabela-enderecos');
-    var novaLinha = tabela.insertRow(-1);
-    var celulaNumero = novaLinha.insertCell(0);
-    var celulaEndereco = novaLinha.insertCell(1);
 
-    celulaNumero.innerHTML = numero;
-    celulaEndereco.innerHTML = endereco;
+// Função para atualizar a numeração dos marcadores
+function atualizarNumeracaoMarcadores() {
+    for (var i = 0; i < marcadores.length; i++) {
+        var novoIdMarcador = i + 1;
+        var novoLabel = novoIdMarcador.toString();
+
+        // Atualiza o rótulo do marcador
+        marcadores[i].setLabel(novoLabel);
+
+        // Atualiza o ID na tabela
+        document.getElementById('tabela-enderecos').rows[i + 1].cells[0].innerText = novoIdMarcador;
+    }
 }
+  
+ 
+
+// Função para excluir um endereço
+function excluirEndereco(valor) {
+   console.log(`linha-203: Excluindo endereço com ID: ${valor}`);
+    
+   // Encontrar o índice do marcador com base no valor do ID
+   var indiceMarcador = marcadores.findIndex(function (marcador) {
+       return marcador.id == valor;
+   });
+
+   // Verifica se o marcador com o ID especificado foi encontrado
+   if (indiceMarcador !== -1) {
+       // Remove o marcador do mapa
+       var marcadorExcluir = marcadores[indiceMarcador];
+       if (marcadorExcluir) {
+           marcadorExcluir.setMap(null);
+       }
+       // Remove o marcador do array
+       marcadores.splice(indiceMarcador, 1);
+       // Atualiza a tabela de endereços
+       atualizarTabelaEnderecos();
+
+       // Atualiza a numeração dos marcadores restantes
+       atualizarNumeracaoMarcadores();
+   } else {
+       // O marcador com o ID especificado não foi encontrado
+       console.log(`O marcador com o ID ${valor} não foi encontrado.`);
+    }
+}
+  
+  
+// Função para atualizar a tabela de endereços após a exclusão de um marcador
+function atualizarTabelaEnderecos() {
+    var tabela = document.getElementById('tabela-enderecos');
+    tabela.innerHTML = ''; // Limpa a tabela
+
+    // Adiciona os cabeçalhos da tabela
+    var headerRow = tabela.insertRow(0);
+    headerRow.insertCell(0).innerHTML = 'ID';
+    headerRow.insertCell(1).innerHTML = 'Endereço';
+
+    // Adiciona os dados da tabela com base nos marcadores restantes
+    for (var i = 0; i < marcadores.length; i++) {
+        adicionarEntradaTabela(marcadores[i].id, marcadores[i].title);
+    }
+}
+
+
+
+
+function limparInputEndereco() {
+    document.getElementById('id_endereco').value = '';
+    document.getElementById('sugestoes-lista').innerHTML = '';
+}
+
+
+
+// Função para Adicionar entrada na Tabela Enderecos
+function adicionarEntradaTabela(id, endereco) {
+    var tabela = document.getElementById('tabela-enderecos');
+
+    // Calcula o próximo ID com base no maior ID existente na tabela
+    var novoId = obterMaiorIdNaTabela() + 1;
+
+    var novaLinha = tabela.insertRow(-1);
+    var celulaId = novaLinha.insertCell(0);
+    var celulaEndereco = novaLinha.insertCell(1);
+    var celulaExclusao = novaLinha.insertCell(2);
+
+    celulaId.innerHTML = novoId;
+    celulaEndereco.innerHTML = endereco;
+
+    // Adiciona o ID invisível na célula
+    celulaEndereco.classList.add('id-hidden');
+    celulaEndereco.dataset.id = novoId;
+
+    // Botão de exclusão
+    var botaoExcluir = document.createElement('button');
+    botaoExcluir.innerHTML = 'Excluir';
+
+    botaoExcluir.onclick = function () {
+        excluirEndereco(id); // Chame a função para excluir o endereço aqui
+        atualizarNumeracaoMarcadores();
+    };
+
+    celulaExclusao.appendChild(botaoExcluir);
+}
+
+function excluirEndereco(valor) {
+    console.log(`linha-203: Excluindo endereço com ID: ${valor}`);
+    // Função para excluir um endereço com base no ID
+    var tabela = document.getElementById('tabela-enderecos');
+    var linhas = tabela.getElementsByTagName('tr');
+
+    // Encontrar o índice do marcador com base no valor do ID
+    var indiceMarcador = marcadores.findIndex(function (marcador) {
+        return marcador.id == valor;
+    });
+
+    // Verifica se o marcador com o ID especificado foi encontrado
+    if (indiceMarcador !== -1) {
+        // Exclui a linha selecionada
+        tabela.deleteRow(indiceMarcador + 1); // +1 para compensar o cabeçalho
+
+        // Remove o marcador do mapa
+        var marcadorExcluir = marcadores[indiceMarcador];
+        if (marcadorExcluir) {
+            marcadorExcluir.setMap(null); // Remover o marcador do mapa
+            marcadores.splice(indiceMarcador, 1); // Remover o marcador do array
+        }
+
+        // Atualiza a numeração dos marcadores restantes
+        atualizarNumeracaoMarcadores(marcadores.map(function (marcador) {
+            return { id: marcador.id, idEndereco: marcador.idEndereco };
+        }));
+    } else {
+        // O marcador com o ID especificado não foi encontrado
+        console.log(`O marcador com o ID ${valor} não foi encontrado.`);
+    }
+}
+
+
+
+// Função para obter o maior ID na tabela
+function obterMaiorIdNaTabela() {
+    var tabela = document.getElementById('tabela-enderecos');
+    var linhas = tabela.getElementsByTagName('tr');
+    
+    var maiorId = 0;
+
+    // Verifica se há linhas na tabela
+    if (linhas.length > 0) {
+        for (var i = 0; i < linhas.length; i++) {
+            var celulaId = linhas[i].cells[0];
+            var idAtual = parseInt(celulaId.innerHTML);
+
+            // Atualiza o maior ID se o ID atual for maior
+            if (idAtual > maiorId) {
+                maiorId = idAtual;
+            }
+        }
+    }
+
+    return maiorId;
+}
+
+// Função para obter o último ID na tabela
+function obterUltimoIdNaTabela() {
+    var tabela = document.getElementById('tabela-enderecos');
+    var linhas = tabela.getElementsByTagName('tr');
+    
+    // Verifica se há linhas na tabela
+    if (linhas.length > 0) {
+        var ultimaLinha = linhas[linhas.length - 1];
+        var celulaId = ultimaLinha.cells[0];
+
+        // Retorna o ID da última linha
+        return parseInt(celulaId.innerHTML);
+    } else {
+        // Se não há linhas, retorna null indicando que não há IDs existentes
+
+        return 1;
+    }
+}
+
+// Função para Gerar proximo ID
+function obterProximoId() {
+    var tabela = document.getElementById('tabela-enderecos');
+    var idsExistentes = [];
+
+    for (var i = 1; i < tabela.rows.length; i++) {
+        var row = tabela.rows[i];
+        var id = parseInt(row.cells[0].innerHTML);
+        idsExistentes.push(id);
+    }
+
+    // Se não houver IDs existentes, comece com 1, caso contrário, use o próximo número disponível
+    return idsExistentes.length > 0 ? Math.max(...idsExistentes) + 1 : 1;
+}
+
+
+
+
+
+// Função para atualizar a ordem de numeração da Tabela de enderecos
+function atualizarNumeracaoTabelaEnderecos() {
+    // Atualiza a numeração dos IDs da tabela de endereços
+    var tabela = document.getElementById('tabela-enderecos');
+    var linhas = tabela.getElementsByTagName('tr');
+
+    for (var i = 1; i < linhas.length; i++) {
+        var celulas = linhas[i].getElementsByTagName('td');
+        if (celulas.length > 0) {
+            celulas[0].innerHTML = i; // Atualiza o ID
+            console.log(`Atualizando ID na linha ${i} para ${i}`);
+            atualizarNumeracaoMarcadores()
+        }
+    }
+}
+
 
 
 async function buscarEndereco() {
@@ -187,7 +412,7 @@ async function obterSugestoesEndereco(input) {
     });
 }
 
-// Adicione a função calcularRota ao escopo global
+// Adiciona a função calcularRota ao escopo global
 window.calcularRota = function () {
     var directionsService = new google.maps.DirectionsService();
 
@@ -235,9 +460,9 @@ window.calcularRota = function () {
 
             // Exemplo de uso
             var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
-            console.log('linha-238: tabela Enderecos Não Otimizada:',valoresTabelaEnderecos);
             var ValoresTabelaOtimizada = obterValoresTabelaOtimizada();
-            console.log('linha-240: tabela Enderecos Otimizada:', ValoresTabelaOtimizada);
+            console.log('linha-347:  O valor da var é:', ValoresTabelaOtimizada)
+            
 
         } else {
             alert('Não foi possível calcular a rota: ' + status);
@@ -245,10 +470,12 @@ window.calcularRota = function () {
     });
 };
 
+
+// Função para adicionar endereços otimizados
 function adicionarEnderecosOtimizados(directionsResult) {
     var ordemOtimizada = directionsResult.routes[0].waypoint_order;
     var tabelaOtimizada = document.getElementById('tabela-enderecos-otimizada');
-    console.log(tabelaOtimizada)
+    
     for (var i = 0; i < ordemOtimizada.length; i++) {
         var index = ordemOtimizada[i];
         var endereco = marcadores[index].title;
@@ -262,33 +489,45 @@ function adicionarEnderecosOtimizados(directionsResult) {
     }
 }
 
-function atualizarMarcador(marker, numero, endereco) {
-    // Atualizar posição do marcador
-    marker.setPosition(marker.position);
+
+// Função para atualizar marcadores
+function atualizarMarcador(marker, indiceLinha, endereco) {
+    // Remove o marcador do mapa
+    marker.setMap(null);
 
     // Atualizar rótulo do marcador
-    marker.setLabel(numero.toString());
+    marker.setLabel(indiceLinha.toString());
 
     // Adicionar uma janela de informações atualizada
     var infoWindow = new google.maps.InfoWindow({
-        content: 'Marcador #' + numero + '<br>Endereço: ' + endereco
+        content: 'Marcador #' + indiceLinha + '<br>Endereço: ' + endereco
     });
+
+    // Atualiza a numeração dos marcadores restantes
+    var valoresTabelaEnderecos = obterValoresTabelaEnderecos(); // Certifique-se de obter os valores corretos
+    var numerosMarcadoresAtuais = valoresTabelaEnderecos.map(function (valor) {
+        return parseInt(valor.id);
+    });
+
+    atualizarNumeracaoMarcadores(numerosMarcadoresAtuais);
 
     marker.addListener('click', function () {
         infoWindow.open(mapa, marker);
     });
 }
 
-function adicionarEntradaTabelaOtimizada(numero, endereco) {
+
+// Função para a realizar entreada na tabela otimizada
+function adicionarEntradaTabelaOtimizada(id, endereco) {
     var tabelaOtimizada = document.getElementById('tabela-enderecos-otimizada');
     var novaLinha = tabelaOtimizada.insertRow(-1);
-    var celulaNumero = novaLinha.insertCell(0);
+    var celulaId = novaLinha.insertCell(0);
     var celulaEndereco = novaLinha.insertCell(1);
     var celulaSequencia = novaLinha.insertCell(2);
 
-    celulaNumero.innerHTML = numero;
+    celulaId.innerHTML = id;
     celulaEndereco.innerHTML = endereco;
-    celulaSequencia.innerHTML = numero; // Sequência começa em 1
+    celulaSequencia.innerHTML = id; // Sequência começa em 1
 
     // Adicionar o ID do endereço como um atributo personalizado da linha
     // novaLinha.setAttribute('data-id-endereco', idEndereco);
@@ -369,8 +608,6 @@ function imprimirRota() {
     // Obtenha a referência à div
     var tabela = obterValoresTabelaOtimizada();
     var quant_parada = tabela.length
-    console.log(quant_parada)
-    console.log(tabela);
 
     // Inicie a string HTML com o cabeçalho da tabela
     var htmlTabela = `
@@ -403,8 +640,7 @@ function imprimirRota() {
             </tr>
         `;
 
-        // Exiba as informações do loop no console
-        console.log(`Loop ${i + 1} - ID: ${idEndereco}, Endereço: ${endereco}, Parada: ${parada}`);
+        
     }
 
     // Finalize a string HTML
@@ -448,5 +684,4 @@ function getCookie(name) {
         }
     }
     return cookieValue;
-}
-}
+}}
