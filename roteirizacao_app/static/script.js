@@ -634,7 +634,6 @@ function obterValoresTabelaOtimizada() {
 }
 
 function imprimirRota() {
-
     // Obtenha a referência à div resumo
     var totalParadas = document.getElementById('totalParadas').value;
     var totalKm = document.getElementById('totalKm').value;
@@ -642,7 +641,7 @@ function imprimirRota() {
 
     // Obtenha a referência à div
     var tabela = obterValoresTabelaOtimizada();
-    var quant_parada = tabela.length
+    var quant_parada = tabela.length;
 
     // Inicie a string HTML com o cabeçalho do documento
     var htmlDocumento = `
@@ -665,7 +664,6 @@ function imprimirRota() {
                     <th>Parada</th>
                 </tr>
             </thead>
-
             <tbody>
     `;
 
@@ -681,11 +679,8 @@ function imprimirRota() {
                 <td>${idEndereco}</td>
                 <td>${endereco}</td>
                 <td>${parada}</td>
-                
             </tr>
         `;
-
-        
     }
 
     // Finalize a string HTML
@@ -694,23 +689,37 @@ function imprimirRota() {
         </table>
     `;
 
-
     // Configurações para o PDF
     var opt = {
         margin: 1,
         filename: "Rota.pdf",
         html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait", width: 30 }, // Corrigido 'with' para 'width'
         fontOptions: {
             textColor: [0, 0, 0] // Define a cor da fonte como preto (RGB)
         }
     };
 
-    // Gere o PDF
-    html2pdf().set(opt).from(htmlDocumento + htmlTabela).save();
+    // Função para gerar PDF
+    function gerarPDF(htmlDocumento, htmlTabela) {
+        html2pdf().set(opt).from(htmlDocumento + htmlTabela).save();
+    }
+
+    // Adicione um ouvinte de evento para html2canvas
+    html2canvas(document.body, { scale: 2 }).then(canvas => {
+        // Quando a renderização estiver concluída, adicione o canvas ao corpo
+        document.body.appendChild(canvas);
+
+        // Agora, chame a função para gerar o PDF após um pequeno atraso
+        setTimeout(function () {
+            gerarPDF(htmlDocumento, htmlTabela);
+        }, 1000); // Ajuste o valor do timeout conforme necessário
+    });
+
     // Exiba as informações do loop no console
     for (var i = 0; i < quant_parada; i++) {
-        console.log(`Loop ${i + 1} - ID: ${idEndereco}, Endereço: ${endereco}, Parada: ${parada}`);
+        console.log(`Loop ${i + 1} - ID: ${tabela[i].idEndereco}, Endereço: ${tabela[i].endereco}, Parada: ${tabela[i].parada}`);
+    }
 }
 
 
@@ -729,7 +738,9 @@ function getCookie(name) {
         }
     }
     return cookieValue;
-}}
+}
+
+
 
 // Função para Atualizar Resumo da Rota
 function atualizarResumo() {
@@ -751,4 +762,158 @@ function atualizarResumo() {
             console.log('Erro ao calcular o resumo.');
         }
     });
+}
+
+
+// Importação de endereço da planilha - inicio
+
+
+// Chave da API global
+const apiKey = 'AIzaSyAl4N-KtLVFhvzJ6MuDua1CbN0LJSEBH1U';
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('inputPlanilha').addEventListener('change', function (event) {
+        var arquivo = event.target.files[0];
+
+        if (arquivo) {
+            var extensao = arquivo.name.split('.').pop().toLowerCase();
+
+            if (extensao === 'csv') {
+                // Use o Papaparse para processar o arquivo CSV
+                Papa.parse(arquivo, {
+                    header: true,
+                    dynamicTyping: true,
+                    complete: function (resultado) {
+                        processarPlanilha(resultado.data);
+                    }
+                });
+            } else if (extensao === 'xlsx') {
+                // Use a biblioteca xlsx para processar o arquivo XLSX
+                var leitor = new FileReader();
+                leitor.onload = function (e) {
+                    var dados = e.target.result;
+                    var workbook = XLSX.read(dados, { type: 'binary' });
+
+                    // Assumindo que a primeira folha contém os dados
+                    var planilha = workbook.Sheets[workbook.SheetNames[0]];
+
+                    // Converter a planilha para um array de objetos
+                    var dadosArray = XLSX.utils.sheet_to_json(planilha, { header: 1 });
+
+                    processarPlanilha(dadosArray);
+                };
+                leitor.readAsBinaryString(arquivo);
+            } else {
+                console.error('Formato de arquivo não suportado. Use arquivos CSV ou XLSX.');
+            }
+        }
+    });
+
+    function processarPlanilha(dados) {
+        console.log(dados);
+
+        // lógica para adicionar os endereços da planilha
+        const colunaEndereco = encontrarColunaEndereco(dados);
+
+        if (colunaEndereco !== null) {
+            console.log('A coluna de endereços é:', colunaEndereco);
+            processarEnderecos(dados, colunaEndereco);
+        } else {
+            console.log('Nenhuma coluna de endereço encontrada na planilha.');
+        }
+    }
+
+    function encontrarColunaEndereco(dados) {
+        const possiveisCabecalhosEndereco = ['ENDEREÇO', 'Endereço', 'endereço', 'ENDERECO', 'Endereco', 'endereco', 'logradouro', 'rua', 'endereco_completo', 'endereço_completo'];
+    
+        for (const linha of dados) {
+            for (const cabecalho in linha) {
+                const valor = linha[cabecalho];
+    
+                if (typeof valor === 'string' && possiveisCabecalhosEndereco.some(keyword => cabecalho.toLowerCase().includes(keyword) || valor.toLowerCase().includes(keyword))) {
+                    return cabecalho;
+                }
+            }
+        }
+    
+        return null;
+    }
+
+    function geocodificarEndereco(endereco, callback) {
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(endereco)}&key=${apiKey}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.results && data.results.length > 0) {
+                    const localizacao = data.results[0].geometry.location;
+                    callback(localizacao);
+                } else {
+                    console.error('Coordenadas não encontradas para o endereço:', endereco);
+                }
+            })
+            .catch(error => console.error('Erro na geocodificação:', error));
+    }
+
+    function processarEnderecos(dados, colunaEndereco) {
+        for (const linha of dados) {
+            const endereco = linha[colunaEndereco];
+            if (endereco) {
+                geocodificarEndereco(endereco, function (localizacao) {
+                    adicionarMarcador(localizacao, endereco);
+                });
+            }
+        }
+    }
+
+    function adicionarMarcador(localizacao, endereco) {
+        if (mapa) {
+            var ultimoIdTabela = obterUltimoIdNaTabela();
+            var numeroMarcador = ultimoIdTabela ? ultimoIdTabela + 1 : 1;
+
+            var marker = new google.maps.Marker({
+                position: localizacao,
+                map: mapa,
+                title: endereco,
+                animation: google.maps.Animation.DROP,
+                label: numeroMarcador.toString(),
+                id: numeroMarcador
+            });
+
+            marker.setAnimation(google.maps.Animation.DROP);
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: 'Marcador #' + numeroMarcador + '<br>Endereço: ' + endereco
+            });
+
+            marker.addListener('click', function () {
+                infoWindow.open(mapa, marker);
+            });
+
+            mapa.panTo(localizacao);
+
+            marcadores.push(marker);
+
+            proximoNumeroMarcador = numeroMarcador + 1;
+
+            var numerosMarcadoresAtuais = marcadores.map(function (marcador) {
+                return { id: marcador.id, idEndereco: marcador.idEndereco };
+            });
+
+            console.log('linha-863: Números dos Marcadores Atuais:', numerosMarcadoresAtuais);
+
+            adicionarEntradaTabela(numeroMarcador, endereco);
+            var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
+
+            document.getElementById('sugestoes-lista').innerHTML = '';
+        }
+    }
+});
+
+// Importação de endereço da planilha - FIM
+
+
+// Limpar a Pagina - Iniciar
+function limparPagina() {
+    location.reload();
 }

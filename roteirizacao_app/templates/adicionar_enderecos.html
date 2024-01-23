@@ -7,16 +7,27 @@
     <title>Roteirizador GET</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+    
+    <!-- Biblioteca xlsx via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+
+    <!-- Adiciona a biblioteca Papaparse -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
 
     <script src="{% static 'script.js' %}"></script>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
     <div class="menu-superior">
+        <button type="button" class="btn-menu" onclick="document.getElementById('inputPlanilha').click()">Importar Planilha</button>
+        <input type="file" id="inputPlanilha" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none;">
         <button type="button" class="btn-menu" onclick="calcularRota()">Otimizar Rota</button>
-        <button type="button" class="btn-menu" onclick="salvar_endereco()">Salvar Endereços</button>
         <button type="button" class="btn-menu" onclick="imprimirRota()">Imprimir Rota</button>
+        <button type="button" class="btn-menu" onclick="limparPagina()">Limpar</button>
+        
     </div>
         
     <div class="resumo">

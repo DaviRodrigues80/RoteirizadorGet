@@ -107,20 +107,3 @@ def salvar_viagem(numero_viagem, valor):
 
 
 
-# Função para calcular o resumo
-def calcular_resumo(request):
-    # Lógica para calcular a quantidade de registros na tabela (pode variar de acordo com a sua implementação)
-    total_paradas = len(request.POST.getlist('endereco'))
-
-    # Lógica para calcular o total de KM (substitua pelo seu cálculo real)
-    total_km = 123.45  # Substitua pelo cálculo real
-
-    # Lógica para calcular a estimativa de tempo (substitua pelo seu cálculo real)
-    tempo_previsto = "2 horas"  # Substitua pelo cálculo real
-
-    # Retorna os resultados como JSON
-    return JsonResponse({
-        'totalParadas': total_paradas,
-        'totalKm': total_km,
-        'tempoPrevisto': tempo_previsto,
-    })

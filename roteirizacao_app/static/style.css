@@ -11,13 +11,15 @@ body {
     margin: 0;
     display: flex;
     justify-content: space-between;
-    background-color: #0b0d4a; /* Cor de fundo do menu */
+    background-color: #0b0d4abc; /* Cor de fundo do menu */
     border-bottom: 1px solid #ccc; /* Borda inferior do menu */
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza a div */
+    width: 30%;
     z-index: 1000;
+    border-radius: 10px;
 }
 .menu-superior li {
     position: relative;
@@ -55,7 +57,7 @@ body {
     border: 3px solid #0e17c5; /* Borda inferior da div resumo */
     width: 60%;
     position: relative; /* Alterado para relative */
-    top: 130px; /* Ajuste conforme necessário para deixar abaixo do menu-superior */
+    top: 140px; /* Ajuste conforme necessário para deixar abaixo do menu-superior */
     z-index: 1000;
     border-radius: 10px;
 }
