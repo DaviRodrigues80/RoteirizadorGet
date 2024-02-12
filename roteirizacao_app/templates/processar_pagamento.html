@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <h2>Processamento de Pagamento</h2>
+
+    {% if pagamento_sucesso %}
+      <div class="alert alert-success" role="alert">
+        O pagamento foi processado com sucesso!
+      </div>
+    {% else %}
+      <div class="alert alert-danger" role="alert">
+        Ocorreu um erro durante o processamento do pagamento. Por favor, tente novamente.
+      </div>
+    {% endif %}
+
+    <!-- Aqui você pode adicionar detalhes adicionais sobre a transação, se necessário -->
+
+    <a href="{% url 'adicionar' %}" class="btn btn-primary">Ir para a página Adicionar Endereços</a>
+  </div>
+{% endblock %}

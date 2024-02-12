@@ -412,6 +412,37 @@ async function obterSugestoesEndereco(input) {
     });
 }
 
+// Verificar se tem saldo/credito para criar rota -  inicio
+
+// verificar_saldo.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Adiciona um evento de clique ao botão
+    document.getElementById('criar-rota').addEventListener('click', function(event) {
+        event.preventDefault(); // Previne o comportamento padrão do link
+        
+        // Realiza uma solicitação AJAX para verificar se o usuário tem permissão para criar a rota
+        var verificarSaldoUrl = document.getElementById('criar-rota').getAttribute('data-verificar-saldo-url');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', verificarSaldoUrl, true);
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                // Se a solicitação for bem-sucedida, redireciona para a página de adicionar rota
+                window.location.href = document.getElementById('criar-rota').getAttribute('data-adicionar-url');
+            } else {
+                // Caso contrário, exibe uma mensagem de erro
+                alert('linha-433: Erro ao verificar permissão para criar rota.');
+            }
+        };
+        xhr.onerror = function() {
+            // Em caso de erro de conexão, exibe uma mensagem de erro
+            alert('linha-438: Erro ao verificar permissão para criar rota.');
+        };
+        xhr.send();
+    });
+});
+
+// Verificar se tem saldo/credito para criar rota - fim
+
 // Adiciona a função calcularRota ao escopo global
 window.calcularRota = function () {
     var directionsService = new google.maps.DirectionsService();
@@ -499,25 +530,187 @@ window.calcularRota = function () {
     });
 };
 
+// Processar pagamento e eviar dados 
+// Função para enviar os dados do usuário para a view de processamento de pagamento
+function enviarDadosPagamento() {
+    var csrftoken = getCookie('csrftoken'); // Função para obter o token CSRF do cookie
 
-// Função para adicionar endereços otimizados
-function adicionarEnderecosOtimizados(directionsResult) {
-    var ordemOtimizada = directionsResult.routes[0].waypoint_order;
-    var tabelaOtimizada = document.getElementById('tabela-enderecos-otimizada');
-    
-    for (var i = 0; i < ordemOtimizada.length; i++) {
-        var index = ordemOtimizada[i];
-        var endereco = marcadores[index].title;
-        var idEndereco = marcadores[index].id;
-        
-        // Adicionar entrada à tabela otimizada
-        adicionarEntradaTabelaOtimizada(i + 1, endereco);
+    // Capturar o ID do usuário logado
+    var usuarioId = "{{ request.user.id }}";
 
-        // Atualizar o marcador existente com nova posição e rótulo
-        atualizarMarcador(marcadores[index], i + 1, idEndereco);
-    }
+    // Capturar a data atual
+    var dataPagamento = new Date().toISOString().slice(0, 10);
+
+    // Capturar a chave PIX
+    var chavePix = document.getElementById("chave-pix").value;
+
+    // Gerar o código de pagamento (exemplo aleatório)
+    var codigo = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+    // Dados a serem enviados para o backend
+    var dados = {
+        usuario_id: usuarioId,
+        data_pagamento: dataPagamento,
+        codigo_pagamento: codigo,
+    };
+
+    // Exemplo de como enviar os dados para o backend por meio de uma solicitação POST Ajax
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/pagamento/", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("X-CSRFToken", csrftoken); // Incluir o token CSRF no cabeçalho da solicitação    
+
+    // Função a ser executada quando a solicitação for concluída
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            // Se a solicitação for bem-sucedida, exibir uma mensagem de sucesso
+            console.log("Dados do pagamento enviados com sucesso!");
+        } else {
+            // Se houver algum erro na solicitação, exibir o status do erro
+            console.error('Erro ao enviar dados do pagamento. Status:', xhr.status);
+        }
+    };
+
+    // Enviar os dados para o backend
+    xhr.send(JSON.stringify(dados));
 }
 
+
+// listar pagamentos por usuarios - inicio
+
+$(document).ready(function() {
+    $('#usuario-form').submit(function(e) {
+        e.preventDefault();
+        var usuarioId = $('#usuario-select').val();
+        $.ajax({
+            url: '/buscar_pagamentos/',
+            type: 'GET',
+            data: {'usuario_id': usuarioId},
+            success: function(response) {
+                $('#pagamentos-table').html(response.pagamentos_html);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Ocorreu um erro ao buscar os pagamentos.');
+            }
+        });
+    });
+});
+
+// listar pagamentos por usuarios - FIM
+
+// Obter o token CSRF do cookie
+function getCSRFToken() {
+    var name = "csrftoken=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for(var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) == 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+}
+
+// Função para copiar o código PIX para a área de transferência do usuário
+function copiarCodigo() {
+    var usuarioId = document.querySelector('.planos-container').getAttribute('data-user-id');
+    var csrftoken = getCSRFToken(); // Obter o token CSRF
+
+    // Capturar a data atual
+    var dataPagamento = new Date().toISOString().slice(0, 10);
+
+    // Capturar a chave PIX
+    var chavePix = document.getElementById("chave-pix").value;
+
+    // Gerar o código de pagamento (exemplo aleatório)
+    var codigo = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+    // Exibir o código gerado
+    var codigoGeradoElement = document.getElementById("codigo-gerado");
+    codigoGeradoElement.textContent = codigo;
+
+    // Exibir a div com o código de pagamento e a mensagem
+    var divCodigoPagamento = document.getElementById("codigo-pagamento");
+    divCodigoPagamento.style.display = "block";
+
+    // Dados a serem enviados para o backend
+    var dados = {
+        usuario_id: usuarioId,
+        data_pagamento: dataPagamento,
+        codigo_pagamento: codigo
+    };
+
+    // Exibir os dados a serem enviados no console
+    console.log("Dados a serem enviados:", dados);
+
+    // Enviar os dados para o backend por meio de uma solicitação POST Ajax
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/pagamento/", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("X-CSRFToken", csrftoken); // Incluir o token CSRF no cabeçalho da solicitação
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    // Exibir um alerta de sucesso
+                    alert("O Pagamento será confirmado e acesso liberado em instantes!");
+                    // Ou você pode usar uma biblioteca para exibir um modal ou notificação mais bonito
+                } else {
+                    // Exibir um alerta de erro se algo der errado
+                    alert("Erro ao processar o pagamento.");
+                }
+            }
+        }
+    };
+
+    // Enviar os dados para o backend
+    xhr.send(JSON.stringify(dados));
+}
+
+// Gerador de codigo para pagamento
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('gerar-codigo-pagamento').addEventListener('click', function() {
+        var codigoPagamento = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        document.getElementById('id_codigo_pagamento').value = codigoPagamento;
+    });
+});
+
+// Atualiza o campos valido até com mais 30 dias a partir da data de pagamento
+document.addEventListener('DOMContentLoaded', function() {
+    var dataPagamentoInput = document.getElementById('id_data_pagamento');
+    var validoAteInput = document.getElementById('id_valido_ate');
+    
+    dataPagamentoInput.addEventListener('change', function() {
+        if (dataPagamentoInput.value) {
+            var dataPagamento = new Date(dataPagamentoInput.value);
+            // Adicionando 30 dias
+            dataPagamento.setDate(dataPagamento.getDate() + 30);
+            // Corrigindo o ano para o mesmo que o da data de pagamento
+            var ano = dataPagamento.getFullYear();
+            var mes = dataPagamento.getMonth() + 1;
+            var dia = dataPagamento.getDate();
+            var validoAte = ano + '-' + (mes < 10 ? '0' : '') + mes + '-' + (dia < 10 ? '0' : '') + dia;
+            validoAteInput.value = validoAte;
+        } else {
+            validoAteInput.value = ''; // Limpar o campo se a data de pagamento não estiver definida
+        }
+    });
+    
+    // Atualize o valor da data de validade ao carregar a página
+    if (dataPagamentoInput.value) {
+        var dataPagamento = new Date(dataPagamentoInput.value);
+        dataPagamento.setDate(dataPagamento.getDate() + 30);
+        var ano = dataPagamento.getFullYear();
+        var mes = dataPagamento.getMonth() + 1;
+        var dia = dataPagamento.getDate();
+        var validoAte = ano + '-' + (mes < 10 ? '0' : '') + mes + '-' + (dia < 10 ? '0' : '') + dia;
+        validoAteInput.value = validoAte;
+    }
+});
 
 // Função para atualizar marcadores
 function atualizarMarcador(marker, indiceLinha, endereco) {
@@ -913,7 +1106,55 @@ document.addEventListener('DOMContentLoaded', function () {
 // Importação de endereço da planilha - FIM
 
 
+// Slide de imagens do Site - Inicio
+$(document).ready(function() {
+    var slideIndex = 1;
+    showSlide(slideIndex);
+
+    function showSlide(n) {
+        var slides = $(".slide");
+        var dots = $(".auto-btn");
+
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.hide();
+        dots.removeClass("active");
+        
+        slides.eq(slideIndex - 1).show();
+        dots.eq(slideIndex - 1).addClass("active");
+    }
+
+    $(".auto-btn").click(function() {
+        slideIndex = $(this).index() + 1;
+        showSlide(slideIndex);
+    });
+
+    // Adiciona funcionalidade de transição automática
+    var slideInterval = setInterval(function() {
+        slideIndex++;
+        if (slideIndex > $(".slide").length) {
+            slideIndex = 1;
+        }
+        showSlide(slideIndex);
+    }, 2000); // 2000 milissegundos = 2 segundos
+});
+
+// Final do Slide de imagens do site
+
+
 // Limpar a Pagina - Iniciar
 function limparPagina() {
     location.reload();
 }
+
+
+// Integração para PAGAMENTO - INICIO
+
+
+// Integração para PAGAMENTO - FIM

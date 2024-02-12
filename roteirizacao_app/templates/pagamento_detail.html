@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Pagamento</h1>
+<p>Valor: R${{ pagamento.valor }}</p>
+<p>Vencimento: {{ pagamento.vencimento }}</p>
+<img src="{{ pagamento.qr_code.url }}" alt="QR Code PIX" />
+<a href="{% url 'pagamento_qrcode' pagamento.id %}">
+    <img src="{% static 'img/qrcode.png' %}" alt="QR Code PIX" />
+</a>
+
+{% endblock %}
