@@ -7,7 +7,15 @@ Cor 4: #35ffa8
 Cor 5: #9900ff
 
 */
-
+/* Definição das cores padrão do site */
+:root {
+    --cor-primaria: #f38f00; /* Laranja Itaú */
+    --cor-secundaria: #023398; /* Azul Itaú */
+    --cor-2: #ffa71e;
+    --cor-3: #00f48f;
+    --cor-4: #35ffa8;
+    --cor-5: #9900ff;
+}
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -15,8 +23,16 @@ body {
     color: #000000;
     margin: 0;
     padding: 0;
-    width: 100%;
+    
+    
 }
+
+.main-container {
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo na horizontal */
+    margin: 0 10px; /* Adiciona margem de 10px em cada lado */
+}
+
 .menu-superior {
     list-style: none;
     padding: 10px; /* Ajuste conforme necessário */
@@ -140,6 +156,7 @@ nav ul {
 nav ul li {
     display: inline;
     margin-right: 20px;
+    
 }
 
 main {
@@ -165,11 +182,16 @@ main {
 
 .slides {
     display: flex;
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* Centraliza os itens verticalmente */
     width: 100%; /* 100% * número de slides */
 }
 
 .slide {
     flex: 1;
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* Centraliza os itens verticalmente */
+    width: 100%; /* 100% * número de slides */
 }
 
 /* Estilo para as imagens dentro do carrossel */
@@ -236,6 +258,15 @@ section h2 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.contact-form img {
+    z-index: -1; /* Coloca a imagem atrás dos outros elementos */
+    opacity: 0.7; /* Define uma opacidade para a imagem de fundo */
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+
+
 .contact-form h2 {
     margin-bottom: 20px;
     font-size: 24px;
@@ -266,7 +297,8 @@ section h2 {
 }
 
 .button-group {
-    text-align: right;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .button-group button,
@@ -279,11 +311,13 @@ section h2 {
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
 }
 
 .button-group button:hover,
 .button-group a:hover {
-    background-color: #0056b3;
+    background-color: #34ff06;
 }
 
 /* Estilo para form de contato - Fim*/
@@ -364,7 +398,7 @@ section h2 {
     border: 3px solid #0e17c5; /* Borda inferior da div resumo */
     width: 60%;
     position: relative; /* Alterado para relative */
-    top: 160px; /* Ajuste conforme necessário para deixar abaixo do menu-superior */
+    top: 130px; /* Ajuste conforme necessário para deixar abaixo do menu-superior */
     z-index: 1000;
     border-radius: 10px;
 }
@@ -585,13 +619,14 @@ a:hover {
 .planos-container {
     display: flex;
     justify-content: space-around;
-    margin-top: 20px;
+    margin-top: 230px;
+    
     
 }
 
 .plano {
-    padding: 20px;
-    border: 1px solid #ccc;
+    padding: 30px;
+    border: 5px solid #023398;
     border-radius: 8px;
     text-align: center;
     width: 30%;
@@ -697,6 +732,20 @@ a:hover {
 
 
 /* EStilo para a tabela - Inicio */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.search-container {
+    margin-bottom: 20px; /* Adicione espaçamento entre o campo de busca e a tabela */
+}
+
+.table-container {
+    width: 100%; /* Garante que a tabela ocupe toda a largura da div */
+}
 
 table {
     width: 100%;

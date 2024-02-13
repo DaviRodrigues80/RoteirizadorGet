@@ -53,7 +53,7 @@
                 <li><a href="{% url 'escolher_plano' %}">Escolher Plano</a></li>
                 <li><a href="{% url 'autoriza_criar_rota' %}">Criar Rota</a></li>
                 {% if user.is_authenticated %}
-                <li><a href="#">Usuário: {{ user.username }} tem: {{ pagamento.quant_acesso }} créditos,  válidos até: {{ pagamento.valido_ate }}</a></li>
+                <li><a href="#">Usuário: {{ user.username }} você tem: {{ pagamento.quant_acesso }} créditos,  válidos até: {{ pagamento.valido_ate }}</a></li>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sair</a>
                 <form id="logout-form" method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
@@ -71,10 +71,12 @@
             
 
     <main>
-        
+        <div class="main-container">
         {% block content %}
         
         {% endblock %}
+        </div>
+        
     </main>
         
 </body>

@@ -89,13 +89,13 @@ até os destinos de entrega.
     <section id="contact">
         <!-- Informações de contato -->
         <div class="contact-form">
-            <h2>Entre em Contato</h2>
+            <img src="{% static 'img/contactus.jpg' %}" alt="Contate-nos">
             <form action="#">
                 
                 <div class="button-group">
-                    <a href="mailto:getexpresstransportes@gmail.com">Entre em Contato</a>
+                    <a href="mailto:getexpresstransportes@gmail.com">Enviar Email</a>
 
-                    <a href="https://wa.me/559997077240" target="_blank" class="whatsapp-button">Enviar WhatsApp</a>
+                    <a href="https://wa.me/559997077240" target="_blank" class="whatsapp-button">WhatsApp</a>
                 </div>
             </form>
         </div>
@@ -103,8 +103,6 @@ até os destinos de entrega.
     </section>
 
     <section id="choose-plan">
-        <!-- Inclui a template de escolha de planos -->
-        <h2>Escolha o Plano Agora</h2>
         {% include 'escolher_plano.html' %}
     </section>
 </main>

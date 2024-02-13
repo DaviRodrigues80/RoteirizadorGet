@@ -3,43 +3,47 @@
 
 {% block content %}
 
-    <div class="container">
+<div class="main-container">
+    <div class="search-container">
         <form method="get" action="{% url 'lista_pagamento' %}">
             <label for="filtro">Filtrar por ID, Usuário ou Código de Pagamento:</label>
             <input type="text" id="filtro" name="filtro" placeholder="Digite o ID, nome de usuário ou código de pagamento">
             <button class="btn-primary" type="submit">Buscar</button>
         </form>
     </div>
-<table>
-    <thead>
-        <tr>
-            <th>ID Pagamento</th>
-            <th>Usuário</th>
-            <th>Data de Pagamento</th>
-            <th>Válido Até</th>
-            <th>Quantidade de Acessos</th>
-            <th>Codigo do Pagamento</th>
-            <th>Editar</th>
-            <th>Excluir</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for pagamento in pagamentos %}
-            <tr>
-                <td>{{ pagamento.id }}</td>
-                <td>{{ pagamento.usuario }}</td>
-                <td>{{ pagamento.data_pagamento }}</td>
-                <td>{{ pagamento.valido_ate }}</td>
-                <td>{{ pagamento.quant_acesso }}</td>
-                <td>{{ pagamento.codigo_pagamento }}</td>
-                <td><a href="{% url 'editar_pagamento' pagamento.id %}"><span class="material-symbols-outlined">
-                    edit
-                    </span></a></td>
-                <td><a href="{% url 'excluir_pagamento' pagamento.id %}"><span class="material-symbols-outlined">
-                    delete
-                    </span></a></td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Pagamento</th>
+                    <th>Usuário</th>
+                    <th>Data de Pagamento</th>
+                    <th>Válido Até</th>
+                    <th>Quantidade de Acessos</th>
+                    <th>Codigo do Pagamento</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pagamento in pagamentos %}
+                <tr>
+                    <td>{{ pagamento.id }}</td>
+                    <td>{{ pagamento.usuario }}</td>
+                    <td>{{ pagamento.data_pagamento }}</td>
+                    <td>{{ pagamento.valido_ate }}</td>
+                    <td>{{ pagamento.quant_acesso }}</td>
+                    <td>{{ pagamento.codigo_pagamento }}</td>
+                    <td><a href="{% url 'editar_pagamento' pagamento.id %}"><span class="material-symbols-outlined">
+                                edit
+                            </span></a></td>
+                    <td><a href="{% url 'excluir_pagamento' pagamento.id %}"><span class="material-symbols-outlined">
+                                delete
+                            </span></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

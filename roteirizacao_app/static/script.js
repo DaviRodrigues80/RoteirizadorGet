@@ -523,7 +523,25 @@ window.calcularRota = function () {
             var ValoresTabelaOtimizada = obterValoresTabelaOtimizada();
             console.log('linha-347:  O valor da var é:', ValoresTabelaOtimizada)
             
-
+            // Solicitação AJAX para atualizar os créditos do usuário
+            fetch('/atualizar_creditos/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken() // Obtém o token CSRF do cookie
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Créditos do usuário atualizados com sucesso!');
+                } else {
+                    console.error('Erro ao atualizar créditos do usuário');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao atualizar créditos do usuário:', error);
+            });
         } else {
             alert('Não foi possível calcular a rota: ' + status);
         }

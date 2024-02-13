@@ -32,7 +32,7 @@ from django.template.loader import render_to_string
 from django.db.models import Count
 from django.db.models import Q
 from .forms import ContatoForm, CustomUserCreationForm, PagamentoForm
-
+from django.db.models import F
 
 
 def home(request):
@@ -394,3 +394,19 @@ def verificar_saldo(request):
     return JsonResponse({'saldo_suficiente': saldo_suficiente})
 
 ## Def verificar saldo -  fim
+
+
+def atualizar_creditos(request):
+    if request.method == 'POST':
+        # Sua lógica para atualizar os créditos do usuário vai aqui...
+        usuario = request.user
+        pagamento = Pagamento.objects.filter(usuario_id=usuario.id).last()
+        if pagamento:
+            pagamento.quant_acesso -= 1
+            pagamento.save()
+        else:
+            return redirect('escolher_plano')
+        
+        return JsonResponse({'message': 'Créditos do usuário atualizados com sucesso!'})
+    else:
+        return JsonResponse({'error': 'Método não permitido'}, status=405)
