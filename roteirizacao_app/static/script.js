@@ -905,7 +905,7 @@ function imprimirRota() {
         margin: 1,
         filename: "Rota.pdf",
         html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "letter", orientation: "portrait", width: 30 }, // Corrigido 'with' para 'width'
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait", width: 40 }, // Corrigido 'with' para 'width'
         fontOptions: {
             textColor: [0, 0, 0] // Define a cor da fonte como preto (RGB)
         }
@@ -924,7 +924,7 @@ function imprimirRota() {
         // Agora, chame a função para gerar o PDF após um pequeno atraso
         setTimeout(function () {
             gerarPDF(htmlDocumento, htmlTabela);
-        }, 1000); // Ajuste o valor do timeout conforme necessário
+        }, 3000); // Ajuste o valor do timeout conforme necessário
     });
 
     // Exiba as informações do loop no console
