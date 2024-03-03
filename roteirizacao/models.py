@@ -20,10 +20,14 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractUser):
-    choices_cargo= (('U', 'Usuario'),
-                    ('Admin', 'Administrador')),
-    cargo: models.CharField(max_length=1, choices=choices_cargo)
+    choices_cargo = (
+        ('U', 'Usuario'),
+        ('Admin', 'Administrador'),
+    )
+    
+    cargo = models.CharField(max_length=5, choices=choices_cargo)
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
 
@@ -38,6 +42,11 @@ class CustomUser(AbstractUser):
     groups = models.ManyToManyField('auth.Group', related_name='custom_user_set', blank=True)
     user_permissions = models.ManyToManyField('auth.Permission', related_name='custom_user_set', blank=True)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.cargo:
+            self.cargo = 'U'  # Define um valor padrão para o cargo caso não seja especificado
+
     class Meta:
         permissions = [
             ("pode_add_endereco", "Pode Adicionar Endereco"),
@@ -45,6 +54,7 @@ class CustomUser(AbstractUser):
             ("pode_deletar_endereco", "Pode Deletar Endereco"),
             # Adicione permissões adicionais conforme necessário
         ]
+
 
 # Tabela Endereco
 class Endereco(models.Model):
