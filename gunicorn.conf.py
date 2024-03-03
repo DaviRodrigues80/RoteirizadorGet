@@ -5,6 +5,6 @@ workers = 3  # Número de workers que o Gunicorn deve usar
 # Especifique o módulo WSGI a ser usado
 # Substitua 'roteirizacao_projeto' pelo nome real do seu projeto Django
 # e 'wsgi' pelo nome do seu arquivo WSGI
-pythonpath = 'D:\Optimiza\roteirizacao_projeto'
+pythonpath = '\roteirizacao_projeto'
 wsgi_app = 'roteirizacao_projeto.wsgi:application'
 
