@@ -1,4 +1,4 @@
-bind = "127.0.0.1:8000"  # Especifique o endereço IP e a porta onde o Gunicorn irá escutar
+bind = "0.0.0.0:8000"  # Especifique o endereço IP e a porta onde o Gunicorn irá escutar
 
 workers = 3  # Número de workers que o Gunicorn deve usar
 
@@ -7,4 +7,5 @@ workers = 3  # Número de workers que o Gunicorn deve usar
 # e 'wsgi' pelo nome do seu arquivo WSGI
 pythonpath = '\roteirizacao_projeto'
 wsgi_app = 'roteirizacao_projeto.wsgi:application'
+daemon = False  # Desativa a daemonização do Gunicorn
 
