@@ -1,0 +1,771 @@
+/* cores padrão do site
+Cor principal: #f38f00 - laranja itau
+Cor secundaria: #023398 - azul itau
+Cor 2: #ffa71e
+Cor 3: #00f48f
+Cor 4: #35ffa8
+Cor 5: #9900ff
+
+*/
+/* Definição das cores padrão do site */
+:root {
+    --cor-primaria: #f38f00; /* Laranja Itaú */
+    --cor-secundaria: #023398; /* Azul Itaú */
+    --cor-2: #ffa71e;
+    --cor-3: #00f48f;
+    --cor-4: #35ffa8;
+    --cor-5: #9900ff;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    
+    
+}
+
+.main-container {
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo na horizontal */
+    margin: 0 10px; /* Adiciona margem de 10px em cada lado */
+}
+
+.menu-superior {
+    list-style: none;
+    padding: 10px; /* Ajuste conforme necessário */
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    background-color: #0b0d4abc; /* Cor de fundo do menu */
+    border-bottom: 1px solid #ccc; /* Borda inferior do menu */
+    position: fixed;
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza a div */
+    width: 50%;
+    z-index: 1000;
+    border-radius: 10px;
+    
+}
+
+
+.menu-superior li {
+    position: relative;
+    z-index: 1000;
+    display: inline;
+    margin: 0;
+    padding: 10px;
+}
+
+.header-container {
+    position: fixed; /* Torna o contêiner fixo no topo da página */
+    top: 0; /* Posiciona o contêiner no topo da página */
+    width: 100%; /* Garante que o contêiner ocupe toda a largura da página */
+    background-color: #ffffff; /* Adiciona um fundo branco para a área do cabeçalho */
+    z-index: 1000; /* Define uma ordem de empilhamento alta para garantir que o cabeçalho fique sobre o conteúdo */
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-right: 10px; /* Opcional: adicione margem para distanciar a logo das bordas */
+    text-align: left; /* Centraliza a logo horizontalmente */
+    padding: 10px; /* Adiciona algum espaço ao redor da logo */
+}
+
+.logo img {
+    width: 100px; /* Defina a largura desejada */
+    height: auto; /* Mantenha a proporção da imagem */
+    
+}
+
+.btn-menu {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.btn-menu:hover {
+    background-color: #27AE60;
+}
+
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    margin-top: 70px;
+}
+
+.nav-home {
+    background-color: #0b0d4abc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    margin-top: 100px;
+}
+
+.nav-home ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.nav-home li {
+    margin: 0;
+    padding: 10px;
+    display: inline;
+}
+
+.nav-home a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+    
+}
+
+main {
+    margin-top: 150px; /* Para deixar espaço para o cabeçalho fixo */
+    left: auto;
+    
+}
+
+/* Estilo para o Slide de imagem - inicio */
+.carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%; /* Ajuste conforme necessário */
+    margin: 0 auto;
+    
+}
+
+.carousel input[type="radio"] {
+    display: none;
+}
+
+
+.slides {
+    display: flex;
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* Centraliza os itens verticalmente */
+    width: 100%; /* 100% * número de slides */
+}
+
+.slide {
+    flex: 1;
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* Centraliza os itens verticalmente */
+    width: 100%; /* 100% * número de slides */
+}
+
+/* Estilo para as imagens dentro do carrossel */
+.slide img {
+    width: 1370px; /* Garante que a imagem preencha a largura da div .slide */
+    height: 640px; /* Garante que a imagem preencha a altura da div .slide */
+    object-fit: cover; /* Redimensiona a imagem mantendo a proporção e cobrindo o contêiner */
+}
+
+
+
+/* Estilo dos botões de navegação */
+.navigation {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    display: none;
+}
+
+.navigation div {
+    cursor: pointer;
+    border: 2px solid #000;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navigation div.active {
+    background-color: #000;
+}
+/* Estilo para o Slide de imagem -  Fim */
+
+/* Estilos para a seção "about" */
+section {
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin-bottom: 20px; /* Adiciona margem inferior para separar as seções */
+}
+
+/* Estilos para os parágrafos dentro da seção "about" */
+section p {
+    margin-bottom: 10px; /* Adiciona espaçamento entre os parágrafos */
+    line-height: 1.6; /* Define a altura da linha para melhor legibilidade */
+}
+
+/* Estilos para o título da seção "about" */
+section h2 {
+    font-size: 24px; /* Define um tamanho de fonte maior para o título */
+    color: #333; /* Define uma cor de texto escura */
+    margin-bottom: 20px; /* Adiciona espaço abaixo do título */
+}
+
+/* Estilo para form de contato - ininio*/
+.contact-form {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form img {
+    z-index: -1; /* Coloca a imagem atrás dos outros elementos */
+    opacity: 0.7; /* Define uma opacidade para a imagem de fundo */
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+
+
+.contact-form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-group button,
+.button-group a {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+}
+
+.button-group button:hover,
+.button-group a:hover {
+    background-color: #34ff06;
+}
+
+/* Estilo para form de contato - Fim*/
+
+/*Configuração do form - logi - INICIO*/
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Ajuste conforme necessário para o tamanho desejado */
+}
+
+.login-form {
+    width: auto; /* Ajuste conforme necessário para a largura desejada */
+    padding: 20px;
+    background-color: #0b0d4abc; /* Adapte conforme necessário para o esquema de cores desejado */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adapte conforme necessário para a sombra desejada */
+    color: #ffffff;
+}
+
+/* Estilos para os campos de entrada */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff; /* Cor de fundo para os campos de entrada */
+    color: #000000; /* Cor do texto nos campos de entrada */
+    box-sizing: border-box;
+}
+
+/* Estilos para o botão */
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Cor de fundo para o botão */
+    color: white; /* Cor do texto no botão */
+    cursor: pointer;
+}
+
+/*Configuração do form - login - FIM*/
+
+/*Configuração do form - signup - INICIO*/
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ajuste conforme necessário para o tamanho desejado */
+}
+
+.signup-form {
+    width: 300px; /* Ajuste conforme necessário para a largura desejada */
+    padding: 20px;
+    background-color: #0b0d4abc; /* Adapte conforme necessário para o esquema de cores desejado */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adapte conforme necessário para a sombra desejada */
+    color: #ffffff;
+}
+
+
+/*Configuração do form - signup - FIM*/
+
+
+.resumo {
+    list-style: none;
+    color: #ffffff;
+    padding: 05px; /* Ajuste conforme necessário */
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #686565a1; /* Cor de fundo da div resumo */
+    border: 3px solid #0e17c5; /* Borda inferior da div resumo */
+    width: 60%;
+    position: relative; /* Alterado para relative */
+    top: 130px; /* Ajuste conforme necessário para deixar abaixo do menu-superior */
+    z-index: 1000;
+    border-radius: 10px;
+}
+
+.input-resumo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px; /* Ajuste conforme necessário */
+
+    /* Adiciona negrito aos labels */
+    font-weight: bold;
+}
+
+.input-resumo label {
+    margin-right: 10px; /* Espaçamento entre os labels e os inputs */
+}
+
+.input-resumo input {
+    border-radius: 5px; /* Cantos arredondados nos inputs */
+    padding: 5px; /* Espaçamento interno dos inputs */
+    width: 100px; /* Ajuste conforme necessário */
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    border-radius: 30px;
+    border: none;
+}
+
+a {
+    color: #3498db;
+}
+
+a:hover {
+    color: #2980b9;
+}
+
+#mapa {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+   
+}
+
+#form-container {
+    position: absolute;
+    top: 200px;
+    left: 10px;
+    z-index: 1;
+    background-color: rgba(95, 95, 96, 0.523);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 200px;
+}
+
+#div-enderecos  {
+    position: absolute;
+    top: 80px;
+    left: 0px; /* Ajuste a posição à esquerda conforme necessário */
+    z-index: 1;
+    background-color: rgba(149, 149, 149);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
+    width: calc(100% - 20px); /* Leva em consideração o padding de 10px em cada lado */
+    margin-top: 50px;
+}
+
+#div-otimizada {
+    position: absolute;
+    top: 80px;
+    left: 0px; /* Ajuste a posição à esquerda conforme necessário */
+    z-index: 1;
+    background-color: rgb(149, 149, 149);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
+    width: calc(100% - 20px); /* Leva em consideração o padding de 10px em cada lado */
+    margin-top: 325px;
+}
+
+
+
+#tabela-enderecos td {
+    border: 1px solid #ffffff;
+    padding: 8px;
+    text-align: left;
+    color: #090382;
+    border-radius: 30px;
+    border: none;
+    font-size: 12px;
+}
+
+#tabela-otimizada td {
+    border: 1px solid #000000;
+    padding: 8px;
+    text-align: left;
+    color: #000000;
+    border-radius: 30px;
+    border: none;
+    font-size: 12px;
+}
+
+
+#tabela-enderecos thead th {
+    position: sticky;
+    top: 0;
+    color: rgb(0, 0, 0);
+    z-index: 2;
+    border: none;
+    font-size: 12px;
+}
+
+#tabela-otimizada thead th {
+    position: sticky;
+    top: 0;
+    color: rgb(255, 255, 255);
+    z-index: 2;
+    border: none;
+    font-size: 12px;
+}
+
+#tabela-enderecos th {
+    background-color: #06ff02c4;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    border: none;
+        
+}
+
+#tabela-otimizada th {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    border: 1px;
+    
+    
+}
+
+#tabela-enderecos caption {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    background-color: #00000055;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+
+}
+
+#tabela-otimizada caption {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    background-color: #818181;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+
+.input-group label {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.input-group button {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.input-group button:hover {
+    background-color: #000000;
+}
+
+#id_endereco {
+    width: 300px;
+    box-sizing: border-box;
+}
+
+
+
+/* CSS para Estilo dos Planos */
+.planos-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 230px;
+    
+    
+}
+
+.plano {
+    padding: 30px;
+    border: 5px solid #023398;
+    border-radius: 8px;
+    text-align: center;
+    width: 30%;
+    background-color: #f38f00;
+    color: #ffffff;
+}
+
+/* Estilos para os botões */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #29f425;
+    color: #fff;
+
+}
+
+/* Outros estilos conforme necessário */
+.plano-titulo {
+    font-size: 45px;
+    color: #023398;
+}
+
+.plano-descricao {
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.plano-preco {
+    font-size: 30px;
+    color: #023398;
+    font-weight: bold;
+
+}
+
+/* Adicione mais estilos conforme necessário */
+/*Estilo para o Form Pagamento - inicio*/
+
+/* Estilos para o formulário de pagamento */
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .payment-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+
+
+/*Estilo para o Form Pagamento - FIM*/
+
+
+
+/* EStilo para a tabela - Inicio */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.search-container {
+    margin-bottom: 20px; /* Adicione espaçamento entre o campo de busca e a tabela */
+}
+
+.table-container {
+    width: 100%; /* Garante que a tabela ocupe toda a largura da div */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+tbody td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* EStilo para a tabela - FIM */
