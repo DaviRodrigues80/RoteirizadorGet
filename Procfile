@@ -1,1 +1,1 @@
-web: gunicorn roteirizacao_app.wsgi --log-file -
+web: gunicorn roteirizacao.wsgi --log-file -
