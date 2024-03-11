@@ -2,7 +2,7 @@ from email.headerregistry import Group
 from imaplib import _Authenticator
 import json
 import logging
-from msilib.schema import ListView
+from django.views.generic import ListView
 from multiprocessing import AuthenticationError
 from pyexpat.errors import messages
 from urllib.request import Request
