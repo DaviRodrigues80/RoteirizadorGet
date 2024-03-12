@@ -30,6 +30,7 @@ ALLOWED_HOSTS = [
     'web-production-fdb3.up.railway.app',
     '127.0.0.1',
     'https://web-production-fdb3.up.railway.app',
+    'https://web-production-fdb3.up.railway.app/login/',
 ]
 
 
