@@ -10,8 +10,8 @@
 {% endif %}
 
 <div class="login-container">
-    <form class="login-form" method="post" action="{% url 'login' %}">
-        {% csrf_token %}
+    <form class="login-form" method="post" action="{% url 'login' %}" accept-charset="utf-8">
+        
         <div class="form-field">
             {{ form.username.label_tag }}
             {{ form.username }}
