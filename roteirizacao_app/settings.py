@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
     'https://web-production-fdb3.up.railway.app',
     'https://web-production-fdb3.up.railway.app/login/',
 ]
-
+CSRF_TRUSTED_ORIGINS =['https://web-production-fdb3.up.railway.app']
 
 # Application definition
 
