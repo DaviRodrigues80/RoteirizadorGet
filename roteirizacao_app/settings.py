@@ -121,9 +121,14 @@ USE_TZ = True
 
 # Configurações para arquivos estáticos
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+#STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_DIRS = [BASE_DIR / "static",]
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

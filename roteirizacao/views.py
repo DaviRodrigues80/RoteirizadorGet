@@ -67,7 +67,7 @@ def pagamento_context_processor(request):
 logger = logging.getLogger(__name__)
 
 
-@csrf_exempt
+
 @login_required
 @permission_required('roteirizacao_app.add_pagamento', raise_exception=True)
 def pagamento_form(request):
