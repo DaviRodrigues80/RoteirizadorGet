@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-container">
+    <div class="search-container">
+        <form method="get" action="{% url 'lista_user' %}">
+            <label for="filtro">Filtrar por Usuário ou Email:</label>
+            <input type="text" id="filtro" name="filtro" placeholder="Digite o ID, nome de usuário ou email">
+            <button class="btn-primary" type="submit">Buscar</button>
+        </form>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Usuario</th>
+                    <th>Usuário</th>
+                    <th>email</th>
+                    <th>Ultimo Login</th>
+                    <th>É superuser</th>
+                    <th>Data de Cadastro</th>
+                    <th>Ativo</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.last_login }}</td>
+                    <td>{{ user.is_superuser }}</td>
+                    <td>{{ user.date_joined }}</td>
+                    <td>{{ user.is_active }}</td>
+                    <td><a href="{% url 'editar_user' user.id %}"><span class="material-symbols-outlined">
+                                edit
+                            </span></a></td>
+                    <td><a href="{% url 'excluir_user' user.id %}"><span class="material-symbols-outlined">
+                                delete
+                            </span></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

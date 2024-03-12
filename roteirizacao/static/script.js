@@ -633,14 +633,30 @@ function getCSRFToken() {
 
 // Função para copiar o código PIX para a área de transferência do usuário
 function copiarCodigo() {
+    // Capturar a chave PIX
+    var chavePix = document.getElementById("chave-pix").value;
+    // Copiar a chave PIX para a área de transferência
+    navigator.clipboard.writeText(chavePix)
+        .then(function() {
+            // Exibir um alerta de sucesso
+            alert("Chave PIX copiada com sucesso, cole no seu aplicativo do banco para efetuar o pagamento: " + chavePix);
+        })
+        .catch(function(error) {
+            // Exibir um alerta de erro, caso ocorra algum problema ao copiar
+            alert("Erro ao copiar a chave PIX: " + error);
+        });
+
+    // Copiar o valor do campo PIX para a área de transferência
+    var chavePixInput = document.getElementById("chave-pix");
+    chavePixInput.select();
+    document.execCommand("copy");
+
+    // Capturar o ID do usuário
     var usuarioId = document.querySelector('.planos-container').getAttribute('data-user-id');
     var csrftoken = getCSRFToken(); // Obter o token CSRF
 
     // Capturar a data atual
     var dataPagamento = new Date().toISOString().slice(0, 10);
-
-    // Capturar a chave PIX
-    var chavePix = document.getElementById("chave-pix").value;
 
     // Gerar o código de pagamento (exemplo aleatório)
     var codigo = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

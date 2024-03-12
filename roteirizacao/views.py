@@ -31,8 +31,9 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.db.models import Count
 from django.db.models import Q
-from .forms import ContatoForm, CustomUserCreationForm, PagamentoForm
+from .forms import ContatoForm, CustomUserCreationForm, CustomUserForm, PagamentoForm
 from django.db.models import F
+from icecream import ic
 
 
 def home(request):
@@ -40,7 +41,7 @@ def home(request):
     pagamento = None
     if request.user.is_authenticated:
         pagamento = Pagamento.objects.filter(usuario=request.user).order_by('-data_pagamento').first()
-        print(pagamento)
+        ic(pagamento)
 
     # Renderize o template com o contexto
     return render(request, 'home.html', {'pagamento': pagamento})
@@ -69,7 +70,7 @@ logger = logging.getLogger(__name__)
 
 
 @login_required
-@permission_required('roteirizacao_app.add_pagamento', raise_exception=True)
+# @permission_required('roteirizacao_app.add_pagamento', raise_exception=True)
 def pagamento_form(request):
     if request.method == 'POST':
         # Se a solicitação for POST, pode ser do formulário HTML ou do JSON
@@ -88,7 +89,7 @@ def pagamento_form(request):
                 # Se o formulário for válido, salvar os dados do formulário
                 pagamento = form.save(commit=False)
                 pagamento.valido_ate = pagamento.data_pagamento + timedelta(days=30)
-                pagamento.quant_acesso = 30  # Ou o valor que desejar
+                pagamento.quant_acesso = 0  # Ou o valor que desejar
                 pagamento.save()
                 return redirect('home')  # Redirecionar para a mesma página após o envio do formulário
             else:
@@ -100,7 +101,7 @@ def pagamento_form(request):
             usuario_id=usuario_id,
             data_pagamento=data_pagamento,
             valido_ate=timezone.now() + timedelta(days=30),  # Exemplo de data de validade
-            quant_acesso=30,  # Exemplo de quantidade de acesso inicial
+            quant_acesso= 0,  # Exemplo de quantidade de acesso inicial
             codigo_pagamento=codigo_pagamento
         )
         
@@ -162,6 +163,9 @@ def lista_pagamento(request):
 
     return render(request, 'lista_pagamento.html', {'pagamentos': pagamentos})
 
+
+
+@login_required
 def processar_pagamento(request):
     if request.method == 'POST':
         # Capturar os dados do POST
@@ -229,6 +233,78 @@ def buscar_pagamentos(request):
             return JsonResponse({'error': 'ID do pagamento não fornecido na solicitação'}, status=400)
     else:
         return JsonResponse({'error': 'Método de solicitação não suportado'}, status=405)
+    
+
+## Gerenciar Usuarios - INICIO
+@login_required
+def lista_user(request):
+    filtro = request.GET.get('filtro')
+    ic(filtro)
+
+    # Filtra os pagamentos com base no filtro
+    if filtro:
+        users = CustomUser.objects.filter(
+            Q(id__icontains=filtro) |
+            Q(username__icontains=filtro) |
+            Q(email__icontains=filtro)
+        )
+    else:
+        user = CustomUser.objects.all()
+        
+
+    return render(request, 'lista_user.html', {'users': user})
+
+
+@login_required
+def editar_user(request, user_id):
+    # Busca o user correspondente ao ID fornecido
+    user = get_object_or_404(CustomUser, pk=user_id)
+    
+    # Verifica se o formulário foi submetido
+    if request.method == 'POST':
+        form = CustomUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_user')
+    else:
+        # Inicializa o formulário com os dados do pagamento
+        form = CustomUserForm(instance=user)
+    
+    return render(request, 'editar_user.html', {'form': form, 'user': user})
+
+@login_required
+def excluir_user(request, user_id):
+    # Busca o user correspondente ao ID fornecido
+    user = get_object_or_404(CustomUser, pk=user_id)
+    
+    # Verifica se o formulário foi submetido
+    if request.method == 'POST':
+        user.delete()
+        return redirect('lista_user')
+    else:
+        return render(request, 'confirmar_exclusao_user.html', {'user': user})
+
+@login_required
+def buscar_user(request):
+    if request.method == 'GET':
+        user_id = request.GET.get('user_id')
+        if user_id:
+            try:
+                # Busca o user com base no ID fornecido
+                user = get_object_or_404(CustomUser, pk=user_id)
+                # Renderiza a tabela de user em HTML
+                user_html = render_to_string('user_table.html', {'user': [user]})
+                return JsonResponse({'editar_user.html': user_html})
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=500)
+        else:
+            return JsonResponse({'error': 'ID do user não fornecido na solicitação'}, status=400)
+    else:
+        return JsonResponse({'error': 'Método de solicitação não suportado'}, status=405)
+
+## Gerenciar Usuarios - FIM
+
+
 
 @login_required
 def salvar_viagem(numero_viagem, valor):
@@ -303,7 +379,7 @@ class EscolherPlanoView(View):
     def post(self, request):
         if not request.user.is_authenticated:
             messages.error(request, 'Você precisa fazer login antes de acessar esta página.')
-            return render(request, 'login_cadastro_opcao.html')
+            return render(request, 'login.html')
             # Redirecione para a página onde você exibe as opções de login ou cadastro
         else:
             form = PagamentoForm(request.POST)

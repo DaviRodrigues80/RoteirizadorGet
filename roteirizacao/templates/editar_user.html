@@ -1,0 +1,15 @@
+<!-- editar_user.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-container">
+    <h2>Editar Usuário</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Salvar Alterações</button>
+    </form>
+</div>
+{% endblock %}

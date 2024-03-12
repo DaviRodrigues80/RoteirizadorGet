@@ -10,6 +10,7 @@
 {% endfor %}
 {% endif %}
   <div class="planos-container" data-user-id="{{ request.user.id }}">
+    {% csrf_token %}
     <!-- Plano Básico -->
     <div class="plano">
       <h3 class="plano-titulo">Plano Básico</h3>
@@ -21,7 +22,8 @@
           Este plano oferece uma solução acessível e eficaz, fornecendo recursos essenciais de roteirização,<br>
           <strong>de 30 rotas com 25 endereços/rota</strong>, para garantir flexibilidade conforme sua necessidade.
       </p>
-      <p class="plano-preco">R$30,00</p>
+      <p class="plano-preco">Apenas R$30,00</p>
+      <p class="plano-descricao">Efetue o pagamento copiado e colando em seu aplicativo bancario</p>
       <!-- Campo de entrada somente leitura para o código de pagamento -->
       <input type="text" id="chave-pix" hidden value="00020126580014BR.GOV.BCB.PIX0136ab2b1cce-d758-4298-9530-96b92b7e58bd520400005303986540530.005802BR5925GET EXPRESS TRANSPORTES U6009SAO PAULO61080540900062250521fOH8EEidx161T5C1429qq6304E2F4" readonly>
       <!-- Elemento para exibir o código de pagamento -->

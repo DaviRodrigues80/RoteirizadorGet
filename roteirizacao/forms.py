@@ -42,3 +42,8 @@ class PagamentoForm(forms.ModelForm):
     class Meta:
         model = Pagamento
         fields = ['id','usuario', 'codigo_pagamento' ,'data_pagamento', 'valido_ate', 'quant_acesso']
+
+class CustomUserForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['password', 'is_superuser', 'username', 'first_name', 'last_name', 'is_staff', 'cargo', 'email', 'is_active']

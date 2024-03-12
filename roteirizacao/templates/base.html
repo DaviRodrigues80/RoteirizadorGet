@@ -50,6 +50,7 @@
                 {% if user.is_superuser %}
                     <li><a href="{% url 'pagamento' %}">Pagamento</a></li>
                     <li><a href="{% url 'lista_pagamento' %}">Listar Pagamentos</a></li>
+                    <li><a href="{% url 'lista_user' %}">Listar Usuarios</a></li>
                 {% endif %}
                 <li><a href="{% url 'escolher_plano' %}">Escolher Plano</a></li>
                 <li><a href="{% url 'autoriza_criar_rota' %}">Criar Rota</a></li>
