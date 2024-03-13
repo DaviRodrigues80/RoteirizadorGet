@@ -1,6 +1,7 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
-from .views import EscolherPlanoView, CustomUserCreationView, atualizar_creditos,  autoriza_criar_rota, buscar_pagamentos, buscar_user, editar_pagamento, editar_user, enviar_email, excluir_pagamento, excluir_user, lista_enderecos, adicionar_endereco, home, lista_pagamento, lista_user, pagamento_form, verificar_saldo
+from .views import EscolherPlanoView, CustomUserCreationView, atualizar_creditos, atualizar_senha,  autoriza_criar_rota, buscar_pagamentos, buscar_user, editar_pagamento, editar_user, enviar_email, excluir_pagamento, excluir_user, lista_enderecos, adicionar_endereco, home, lista_pagamento, lista_user, pagamento_form, recuperar_senha, verificar_saldo
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', home, name='home'),
@@ -23,5 +24,7 @@ urlpatterns = [
     path('buscar_user/', buscar_user, name='buscar_user'),
     path('editar_user/<int:user_id>/', editar_user, name='editar_user'),
     path('excluir_user/<int:user_id>/', excluir_user, name='excluir_user'),
+    path('recuperar-senha/', recuperar_senha, name='recuperar_senha'),
+    path('atualizar-senha/', atualizar_senha, name='atualizar_senha'),
 
 ]

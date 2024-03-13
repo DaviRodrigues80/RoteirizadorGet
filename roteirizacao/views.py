@@ -34,6 +34,7 @@ from django.db.models import Q
 from .forms import ContatoForm, CustomUserCreationForm, CustomUserForm, PagamentoForm
 from django.db.models import F
 from icecream import ic
+from django.contrib.auth.hashers import make_password
 
 
 def home(request):
@@ -486,3 +487,39 @@ def atualizar_creditos(request):
         return JsonResponse({'message': 'Créditos do usuário atualizados com sucesso!'})
     else:
         return JsonResponse({'error': 'Método não permitido'}, status=405)
+    
+
+def recuperar_senha(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        user = CustomUser.objects.filter(username=username).first()
+        if user:
+            # Exibir formulário para definir nova senha
+            return render(request, 'nova_senha.html', {'username': username})
+        else:
+            # Caso o usuário não exista, redirecionar de volta com uma mensagem de erro
+            return redirect('login')
+    else:
+        return render(request, 'recuperar_senha.html')
+    
+
+def atualizar_senha(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        nova_senha = request.POST.get('nova_senha')
+        confirmar_senha = request.POST.get('confirmar_senha')
+
+        if nova_senha == confirmar_senha:
+            user = CustomUser.objects.filter(username=username).first()
+            if user:
+                user.password = make_password(nova_senha)
+                user.save()
+                return redirect('login')  # Redirecionar para a página de login após atualizar a senha
+            else:
+                # Caso o usuário não exista, redirecionar de volta com uma mensagem de erro
+                return redirect('login')
+        else:
+            # Senhas não coincidem, redirecionar de volta com uma mensagem de erro
+            return redirect('login')
+    else:
+        return redirect('login')
