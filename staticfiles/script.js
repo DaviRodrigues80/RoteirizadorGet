@@ -42,6 +42,10 @@ function initMap() {
                     title: 'Estou Aqui'
                 });
 
+                // Atualiza o valor do campo de input com as coordenadas
+                document.getElementById('endereco-inicio').value = userLocation.lat + ',' + userLocation.lng;
+
+
                 // Inicializa a função de autocomplete...
                 initAutocomplete();
             }, function (error) {
