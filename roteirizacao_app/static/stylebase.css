@@ -1,0 +1,50 @@
+body {
+  background-color: #fbfbfb;
+}
+
+/* Estilos padrão da barra lateral */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 58px 0 0; /* Altura da barra de navegação */
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+  width: 240px;
+  z-index: 600;
+}
+
+/* Estilos da barra lateral quando a tela é menor */
+@media (max-width: 991.98px) {
+  .sidebar {
+      width: 100%;
+  }
+}
+
+/* Estilos do conteúdo principal */
+main {
+  padding-left: 0; /* Removido o preenchimento para permitir que o conteúdo se estenda pela tela inteira */
+}
+
+/* Adicionando um espaço à esquerda no conteúdo principal quando a barra lateral está presente (tela larga) */
+@media (min-width: 991.98px) {
+  main {
+      padding-left: 240px;
+  }
+}
+
+/* Estilos de um item de menu ativo na barra lateral */
+.sidebar .active {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+/* Estilos de um conteúdo fixo na barra lateral */
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px); /* Altura ajustável para se ajustar à barra superior */
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Conteúdo com rolagem se a tela for mais curta que o conteúdo */
+}

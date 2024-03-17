@@ -47,12 +47,35 @@ def home(request):
     # Renderize o template com o contexto
     return render(request, 'home.html', {'pagamento': pagamento})
 
+def base2(request):
+    # Renderize o template com o contexto
+    return render(request, 'base2.html')
+
+def sobre(request):
+    # Renderize o template com o contexto
+    return render(request, 'sobre.html')
+
+def recursos(request):
+    # Renderize o template com o contexto
+    return render(request, 'recursos.html')
+
+def contato(request):
+    # Renderize o template com o contexto
+    return render(request, 'contato.html')
 
 def base(request):
+    # Chamar a função autoriza_criar_rota para verificar a permissão do usuário
+    mensagem = autoriza_criar_rota(request)
+
     # Obtenha o pagamento do usuário atual
     pagamento = None
+    # Verifica se o usuário está autenticado
     if request.user.is_authenticated:
+        # Obtém o pagamento do usuário atual
         pagamento = Pagamento.objects.filter(usuario=request.user).order_by('-data_pagamento').first()
+        ic(pagamento)
+    else:
+        pagamento = None
 
     # Renderize o template com o contexto
     return render(request, 'base.html', {'pagamento': pagamento})
@@ -162,7 +185,10 @@ def lista_pagamento(request):
     else:
         pagamentos = Pagamento.objects.all()
 
-    return render(request, 'lista_pagamento.html', {'pagamentos': pagamentos})
+    # Obtém o usuário logado
+    user_logado = request.user
+
+    return render(request, 'lista_pagamento.html', {'pagamentos': pagamentos, 'user_logado': user_logado})
 
 
 
@@ -212,9 +238,12 @@ def excluir_pagamento(request, pagamento_id):
     
     # Verifica se o formulário foi submetido
     if request.method == 'POST':
+        ic(pagamento)  # Debug: Verifica o pagamento antes de excluí-lo
         pagamento.delete()
+        ic('Pagamento excluído com sucesso')  # Debug: Confirmação de exclusão bem-sucedida
         return redirect('lista_pagamento')
     else:
+        ic(pagamento)  # Debug: Verifica o pagamento antes de renderizar a confirmação de exclusão
         return render(request, 'confirmar_exclusao_pagamento.html', {'pagamento': pagamento})
 
 @login_required
@@ -251,9 +280,11 @@ def lista_user(request):
         )
     else:
         user = CustomUser.objects.all()
-        
+    
+    # Obtém o usuário logado
+    user_logado = request.user    
 
-    return render(request, 'lista_user.html', {'users': user})
+    return render(request, 'lista_user.html', {'users': user, 'user_logado': user_logado})
 
 
 @login_required
@@ -454,7 +485,7 @@ def enviar_email(request):
             return render(request, 'sucesso.html')
     else:
         form = ContatoForm()
-    return render(request, 'contato.html', {'form': form})
+    return render(request, 'envia_email.html', {'form': form})
 
 ## Def verificar saldo -  inicio
 def verificar_saldo(request):

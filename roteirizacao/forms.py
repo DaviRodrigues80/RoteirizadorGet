@@ -46,4 +46,4 @@ class PagamentoForm(forms.ModelForm):
 class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['password', 'is_superuser', 'username', 'first_name', 'last_name', 'is_staff', 'cargo', 'email', 'is_active']
+        fields = "__all__"

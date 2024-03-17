@@ -1,10 +1,14 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
-from .views import EscolherPlanoView, CustomUserCreationView, atualizar_creditos, atualizar_senha,  autoriza_criar_rota, buscar_pagamentos, buscar_user, editar_pagamento, editar_user, enviar_email, excluir_pagamento, excluir_user, lista_enderecos, adicionar_endereco, home, lista_pagamento, lista_user, pagamento_form, recuperar_senha, verificar_saldo
+from .views import EscolherPlanoView, CustomUserCreationView, atualizar_creditos, atualizar_senha,  autoriza_criar_rota, base2, buscar_pagamentos, buscar_user, contato, editar_pagamento, editar_user, enviar_email, excluir_pagamento, excluir_user, lista_enderecos, adicionar_endereco, home, lista_pagamento, lista_user, pagamento_form, recuperar_senha, recursos, sobre, verificar_saldo
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', home, name='home'),
+    path('base2/', base2, name='base2'),
+    path('sobre/', sobre, name='sobre'),
+    path('recursos/', recursos, name='recursos'),
+    path('contato/', contato, name='contato'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('signup/', CustomUserCreationView.as_view(), name='signup'),
     path('logout/', LogoutView.as_view(), name='logout'),

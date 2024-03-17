@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <img src="{% static 'img/Logofivicon.png'%}" alt="Logo" style="width: 50px; height: 50px;">
+                    <h2 class="card-title">Sobre o GET OPTIMIZA</h2>
+                    <p class="card-text">Bem-vindo ao GET OPTIMIZA, a solução completa para otimização de rotas de entrega.</p>
+                    <p class="card-text">Com nosso software intuitivo e poderoso, você terá todas as ferramentas necessárias para simplificar e aprimorar sua logística de maneira eficiente e eficaz. Confira as principais funcionalidades que oferecemos:</p>
+                    <ul class="card-text">
+                        <li>Cadastro Simples e Pagamento Seguro</li>
+                        <li>Adição de Endereços Individualmente ou por Importação</li>
+                        <li>Otimização de Rotas Inteligente</li>
+                        <li>Geração de Rota em PDF</li>
+                        <li>Exportação de Rota para GPS</li>
+                    </ul>
+                    <p class="card-text">Com o GET OPTIMIZA, você terá tudo o que precisa para revolucionar sua logística de entrega. Não perca mais tempo e dinheiro com rotas ineficientes. Experimente hoje mesmo e descubra como podemos ajudá-lo a maximizar a eficiência e a lucratividade de suas operações de entrega.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <img src="{% static 'img/sobre.jpeg' %}" class="img-fluid" alt="Imagem sobre o GET OPTIMIZA">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

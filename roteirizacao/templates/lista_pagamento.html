@@ -2,15 +2,21 @@
 {% load static %}
 
 {% block content %}
-
-<div class="main-container">
-    <div class="search-container">
-        <form method="get" action="{% url 'lista_pagamento' %}">
-            <label for="filtro">Filtrar por ID, Usuário ou Código de Pagamento:</label>
-            <input type="text" id="filtro" name="filtro" placeholder="Digite o ID, nome de usuário ou código de pagamento">
-            <button class="btn-primary" type="submit">Buscar</button>
-        </form>
+<div class="lista_pagamento-container">
+    <!-- Exibição da mensagem do usuário logado -->
+    <div class="user-message">
+        {% if request.user.is_authenticated %}
+            <p>Usuário logado: {{ request.user.username }}</p>
+        {% else %}
+            <p>Nenhum usuário logado no momento.</p>
+        {% endif %}
     </div>
+    <form method="get" action="{% url 'lista_pagamento' %}">
+        <label for="filtro">Filtrar por ID, Usuário ou Código de Pagamento:</label>
+        <input type="text" id="filtro" name="filtro" placeholder="Digite o ID, nome de usuário ou código de pagamento">
+        <button class="btn-primary" type="submit">Buscar</button>
+    </form>
+
     <div class="table-container">
         <table>
             <thead>

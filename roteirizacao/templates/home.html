@@ -3,107 +3,201 @@
 {% load static %}
 
 {% block content %}
+
 <main>
-    <div class="carousel">
-        <input type="radio" id="slide1" name="slides" checked>
-        <input type="radio" id="slide2" name="slides">
-        <input type="radio" id="slide3" name="slides">
-        <input type="radio" id="slide4" name="slides">
-        <input type="radio" id="slide5" name="slides">
-        
-        <div class="slides">
-            <div class="slide">
-                <img src="{% static 'img/roteirizacao-1.jpg' %}" alt="Imagem 1">
-            </div>
-            <div class="slide">
-                <img src="{% static 'img/roteirizacao-2.jpg' %}" alt="Imagem 2">
-            </div>
-            <div class="slide">
-                <img src="{% static 'img/roteirizacao-3.jpg' %}" alt="Imagem 3">
-            </div>
-            <div class="slide">
-                <img src="{% static 'img/roteirizacao-4.jpg' %}" alt="Imagem 4">
-            </div>
-            <div class="slide">
-                <img src="{% static 'img/roteirizador-mapa.png' %}" alt="Imagem 5">
-            </div>
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'img/roteirizacao-1.jpg' %}" class="d-block mx-auto" style="max-height: 400px;"
+          alt="Imagem 1">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/roteirizacao-2.png' %}" class="d-block mx-auto" style="max-height: 400px;"
+          alt="Imagem 2">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/roteirizacao-3.png' %}" class="d-block mx-auto" style="max-height: 400px;"
+          alt="Imagem 3">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/roteirizacao-4.png' %}" class="d-block mx-auto" style="max-height: 400px;"
+          alt="Imagem 4">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/roteirizador-mapa.png' %}" class="d-block mx-auto" style="max-height: 400px;"
+          alt="Imagem 5">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- Vídeo demonstrativo 
+  <div class="video-container">
+    <video controls>
+      <source src="{% static 'videos/demo.mp4' %}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>-->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{% static 'img/cliente1.jpeg' %}" class="card-img-top" alt="Feature 1">
+          <div class="card-body">
+            <h5 class="card-title">Planejamento de Rotas</h5>
+            <p class="card-text">Utilize nosso sistema avançado de planejamento de rotas para otimizar suas entregas.
+            </p>
+          </div>
         </div>
-        
-        <div class="navigation">
-            <div class="auto-btn1"></div>
-            <div class="auto-btn2"></div>
-            <div class="auto-btn3"></div>
-            <div class="auto-btn4"></div>
-            <div class="auto-btn5"></div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{% static 'img/cliente2.jpeg' %}" class="card-img-top" alt="Feature 2">
+          <div class="card-body">
+            <h5 class="card-title">Importação dos Endereços</h5>
+            <p class="card-text">Importe diretamete da sua planilha os endereços para otimizar sua rota.</p>
+          </div>
         </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{% static 'img/cliente3.jpeg' %}" class="card-img-top" alt="Feature 3">
+          <div class="card-body">
+            <h5 class="card-title">Impressão</h5>
+            <p class="card-text">Você pode imprimir sua rota, e compartilhar diretamente com seu cliente ou seu
+              motorista.</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <section id="about">
-        <!-- Conteúdo sobre a aplicação -->
-        <h2>Sobre o GET OPTIMIZA</h2>
-        <p>Bem-vindo ao GET OPTIMIZA, a solução completa para otimização de rotas de entrega.</p>
-        <p>Com nosso software intuitivo e poderoso, você terá todas as ferramentas necessárias para simplificar e aprimorar
-            sua logística de maneira eficiente e eficaz. Confira as principais funcionalidades que oferecemos:</p>
-
-<p>Cadastro Simples e Pagamento Seguro:</p>
-Após se cadastrar e confirmar o pagamento, você terá acesso imediato à aplicação, conforme os termos do contrato estabelecidos.
-Garantimos um processo fácil e seguro para começar a otimizar suas rotas.
-
-<p>Adição de Endereços Individualmente ou por Importação:</p>
-Com o GET OPTIMIZA, você pode adicionar endereços manualmente um a um ou importá-los de uma planilha nos formatos CSV ou XLSX.
-Isso proporciona flexibilidade e conveniência no gerenciamento de sua lista de entregas.
-
-<p>Otimização de Rotas Inteligente:</p>
-Nosso algoritmo avançado organiza automaticamente os endereços na sequência ideal de entrega,
-levando em consideração as regras de trânsito e a eficiência do percurso.
-Isso economiza tempo, reduz custos e melhora a precisão das entregas.
-
-<p>Geração de Rota em PDF:</p>
-Após a otimização da rota, você pode facilmente gerar e imprimir um arquivo PDF com a rota otimizada.
-Isso proporciona uma referência física prática para os motoristas, garantindo uma execução suave e eficiente das entregas.
-
-<p>Exportação de Rota para GPS:</p>
-Além disso, o GET OPTIMIZA permite exportar a rota otimizada diretamente para o navegador de GPS.
-Isso simplifica ainda mais o processo para os motoristas, permitindo uma navegação precisa e sem complicações
-até os destinos de entrega.
-
-<p>Com o GET OPTIMIZA, você terá tudo o que precisa para revolucionar sua logística de entrega. Não perca mais tempo e dinheiro com rotas ineficientes. Experimente hoje mesmo
-   e descubra como podemos ajudá-lo a maximizar a eficiência e a lucratividade de suas operações de entrega.</p>
-        <!-- ... -->
-    </section>
-
-    <section id="features">
-        <!-- Recursos da aplicação -->
-        <h2>Recursos</h2>
-       <p>Adiciona endereço individual</p> 
-       <p>Adiciona endereço importando da planilha no formato csv ou xlsx</p>
-       <p>Otimiza a rota colocando na sequencia de entrega, respeitando as regras do transito</p> 
-       <p>Imprimi a Rota em arquivo PDF</p> 
-       <p>Exportar Rota para navegador de gps*</p> <br>
-       <p>* Para esta funcionalidade precisa acessar o plano premim</p> 
-
-
-        <!-- ... -->
-    </section>
-
-    <section id="contact">
-        <!-- Informações de contato -->
-        <div class="contact-form">
-            <img src="{% static 'img/contactus.jpg' %}" alt="Contate-nos">
-            <form action="#">
-                
-                <div class="button-group">
-                    <a href="mailto:getexpresstransportes@gmail.com">Enviar Email</a>
-
-                    <a href="https://wa.me/559997077240" target="_blank" class="whatsapp-button">WhatsApp</a>
-                </div>
-            </form>
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <img src="{% static 'img/testemunho2.jpeg' %}" class="card-img-top" alt="Client 1">
+          <div class="card-body">
+            <p class="card-text">"Excelente serviço! A roteirização inteligente economizou nosso tempo e dinheiro."</p>
+            <span class="text-muted"></span>
+          </div>
         </div>
-        <!-- ... -->
-    </section>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <img src="{% static 'img/testemunho1.jpeg' %}" class="card-img-top" alt="Client 2">
+          <div class="card-body">
+            <p class="card-text">"Recomendo a todos! A plataforma é fácil de usar e oferece resultados incríveis."</p>
+            <span class="text-muted"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{% static 'img/Logofivicon.png' %}" class="card-img-top" alt="Feature 2">
+          <div class="card-body">
+            <h3 class="card-title">Plano Básico</h3>
+            <p class="card-text">
+              <!-- Descrição do plano básico -->
+              <li>Roteirização de 25 Endereços/ROTA</li>
+              <li>Criar até 30 rotas</li>
+              <li>Impressão da Rota</li>
+            </p>
+            <h3 class="card-text">Apenas R$30,00</h3>
+            <p class="card-text">Efetue o pagamento copiando e colando em seu aplicativo bancário</p>
+            <!-- Campo de entrada somente leitura para o código de pagamento -->
+            <input type="text" id="chave-pix" hidden
+              value="00020126580014BR.GOV.BCB.PIX0136ab2b1cce-d758-4298-9530-96b92b7e58bd520400005303986540530.005802BR5925GET EXPRESS TRANSPORTES U6009SAO PAULO61080540900062250521fOH8EEidx161T5C1429qq6304E2F4"
+              readonly>
+            <!-- Elemento para exibir o código de pagamento -->
+            <div id="codigo-pagamento" style="display: none;">
+              <p class="card-text">Anote seu código de pagamento:</p>
+              <p class="card-text" id="codigo-gerado"></p>
+            </div>
+            <!-- Botão para copiar o código de pagamento -->
+            <button class="btn btn-success" onclick="copiarCodigo()">Copiar PIX</button> <br>
+            <div class="container" style="background-color: aliceblue; border-radius: 50%; padding: 10px;">
+              <img src="{% static 'img\pix-banco-central-logo.png' %}" alt="Logo do PIX">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{% static 'img/Logofivicon.png' %}" class="card-img-top" alt="Feature 3">
+          <div class="card-body">
+            <h3 class="card-title">Plano Intermediário</h3>
+            <p class="card-text">
+              <!-- Descrição do plano intermediário -->
+              <li>Roteirização de 25 Endereços/ROTA</li>
+              <li>Criar até 30 rotas</li>
+              <li>Impressão da Rota</li>
+              <li>Exportação de Rota</li>
+            </p>
+            <h3 class="card-text">Apenas R$45,00</h3>
+            <p class="card-text">Efetue o pagamento copiando e colando em seu aplicativo bancário</p>
+            <!-- Campo de entrada somente leitura para o código de pagamento -->
+            <input type="text" id="chave-pix-2" hidden
+              value="00020126580014BR.GOV.BCB.PIX0136ab2b1cce-d758-4298-9530-96b92b7e58bd520400005303986540530.005802BR5925GET EXPRESS TRANSPORTES U6009SAO PAULO61080540900062250521fOH8EEidx161T5C1429qq6304E2F4"
+              readonly>
+            <!-- Elemento para exibir o código de pagamento -->
+            <div id="codigo-pagamento-2" style="display: none;">
+              <p class="card-text">Anote seu código de pagamento:</p>
+              <p class="card-text" id="codigo-gerado-2"></p>
+            </div>
+            <!-- Botão para copiar o código de pagamento -->
+            <button class="btn btn-success" onclick="copiarCodigo()">Copiar PIX</button> <br>
+            <div style="background-color: aliceblue; border-radius: 50%; padding: 10px;">
+              <img src="{% static 'img\pix-banco-central-logo.png' %}" alt="Logo do PIX">
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <section id="choose-plan">
-        {% include 'escolher_plano.html' %}
-    </section>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{% static 'img/Logofivicon.png' %}" class="card-img-top" alt="Feature 3">
+          <div class="card-body">
+            <h3 class="card-title">Plano Completo</h3>
+            <p class="card-text">
+              <!-- Descrição do plano intermediário -->
+              <li>Roteirização de Endereços/ROTA sem limite</li>
+              <li>Criar rota sem limite</li>
+              <li>Impressão da Rota</li>
+              <li>Exportação de Rota</li>
+            </p>
+            <h3 class="card-text">Apenas R$95,00</h3>
+            <p class="card-text">Efetue o pagamento copiando e colando em seu aplicativo bancário</p>
+            <!-- Campo de entrada somente leitura para o código de pagamento -->
+            <input type="text" id="chave-pix-2" hidden
+              value="00020126580014BR.GOV.BCB.PIX0136ab2b1cce-d758-4298-9530-96b92b7e58bd520400005303986540530.005802BR5925GET EXPRESS TRANSPORTES U6009SAO PAULO61080540900062250521fOH8EEidx161T5C1429qq6304E2F4"
+              readonly>
+            <!-- Elemento para exibir o código de pagamento -->
+            <div id="codigo-pagamento-2" style="display: none;">
+              <p class="card-text">Anote seu código de pagamento:</p>
+              <p class="card-text" id="codigo-gerado-2"></p>
+            </div>
+            <!-- Botão para copiar o código de pagamento -->
+            <button class="btn btn-success" onclick="copiarCodigo()">Copiar PIX</button> <br>
+            <div style="background-color: aliceblue; border-radius: 50%; padding: 10px;">
+              <img src="{% static 'img\pix-banco-central-logo.png' %}" alt="Logo do PIX">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
 </main>
+
 {% endblock %}

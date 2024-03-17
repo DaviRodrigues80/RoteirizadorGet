@@ -26,7 +26,7 @@ class CustomUser(AbstractUser):
         ('U', 'Usuario'),
         ('Admin', 'Administrador'),
     )
-    
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
     cargo = models.CharField(max_length=5, choices=choices_cargo)
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)

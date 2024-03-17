@@ -2,26 +2,37 @@
 {% csrf_token %}
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css"/>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-xBuQ/xzml4BrK6rFEXToICjutAdR5LAfG1C33qDh+9M=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
-    
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <!-- Biblioteca xlsx via CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
-
     <!-- Adiciona a biblioteca Papaparse -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-wp6t5v7ZzzkuWYm1g6YeGkxzhc02/y8L9JltnRYdRFp2X1L96Gr/GzNjY61MX3Z4sG+2p9rdOQWjYMT0i0tIhA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <script src="{% static 'script.js' %}"></script>
     <link rel="icon" type="image/png" href="{% static 'img/LogoGetSite.png' %}">
     <link rel="stylesheet" href="{% static 'style.css' %}">
@@ -29,57 +40,95 @@
 </head>
 
 <body>
-    <div class="header-container">
 
+    <!-- Logos -->
+    <div class="logo-container fixed-top">
         <div class="logo">
             <img src="{% static 'img/LogoGetSite.png' %}" alt="Logo da Empresa">
-            
-        </div>
-
-        <div class="logo">
             <img src="{% static 'img/getoptimiza.png' %}" alt="Logo da Empresa 2" style="width: 40%;">
         </div>
-        
-        <nav class="nav-home">
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="#about">Sobre</a></li>
-                <li><a href="#features">Recursos</a></li>
-                <li><a href="#contact">Contato</a></li>
-                <li><a href="#">Meu Plano</a></li>
-                {% if user.is_superuser %}
-                    <li><a href="{% url 'pagamento' %}">Pagamento</a></li>
-                    <li><a href="{% url 'lista_pagamento' %}">Listar Pagamentos</a></li>
-                    <li><a href="{% url 'lista_user' %}">Listar Usuarios</a></li>
-                {% endif %}
-                <li><a href="{% url 'escolher_plano' %}">Escolher Plano</a></li>
-                <li><a href="{% url 'autoriza_criar_rota' %}">Criar Rota</a></li>
-                {% if user.is_authenticated %}
-                <li><a href="#">Usuário: {{ user.username }} você tem: {{ pagamento.quant_acesso }} créditos,  válidos até: {{ pagamento.valido_ate }}</a></li>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sair</a>
-                <form id="logout-form" method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" style="display: none;">Confirmar saída</button>
-                </form>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'signup' %}">Cadastro</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        
-        
     </div>
-            
 
-    <main>
-        <div class="main-container">
-        {% block content %}
-        
-        {% endblock %}
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="btn-group me-auto text-start" role="group" aria-label="Primary navigation">
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'home' %}">Home</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'sobre' %}">Sobre</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'recursos' %}">Recursos</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'contato' %}">Contato</a></button>
+                    {% if user.is_superuser %}
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'pagamento' %}">Pagamento</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'lista_pagamento' %}">Listar Pagamentos</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'lista_user' %}">Listar Usuarios</a></button>
+
+                    {% endif %}
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'escolher_plano' %}">Escolher Plano</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'autoriza_criar_rota' %}">Criar Rota</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'login' %}">Login</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link"
+                            href="{% url 'signup' %}">Cadastro</a></button>
+                    <button type="button" class="btn btn-danger"><a class="nav-link" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sair</a></button>
+                </div>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <form id="logout-form" class="nav-item" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link" style="display: none;">Confirmar saída</button>
+                    </form>
+                    {% else %}
+                    <li class="nav-item">
+
+                    </li>
+                    <li class="nav-item">
+
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-        
+    </nav>
+
+
+    <main class="main-base">
+        <div class="main-container-base">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+
     </main>
-        
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <img src="{% static 'img/Logo.jpg' %}" alt="Logo GET OPTIMIZA">
+                    <p>&copy; 2024 GET OPTIMIZA. Todos os direitos reservados.&reg</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

@@ -2,69 +2,104 @@
 {% load static %}
 
 {% block content %}
-    <div class="menu-superior">
-        <button type="button" class="btn-menu" onclick="document.getElementById('inputPlanilha').click()">Importar Planilha</button>
-        <input type="file" id="inputPlanilha" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none;">
-        <button type="button" class="btn-menu" onclick="calcularRota()">Otimizar Rota</button>
-        <button type="button" class="btn-menu" onclick="imprimirRota()">Imprimir Rota</button>
-        <button type="button" class="btn-menu" onclick="limparPagina()">Limpar</button>
-        
-    </div>
-        
-    <div class="resumo">
-        <div class="input-resumo">
-            <label>Total de paradas: <span id="spantotalParadas"></span></label>
-            <input type="text" id="totalParadas">
-            <label>Total de KM: <span id="spantotalKm"></span></label>
-            <input type="text" id="totalKm">
-            <label>Tempo previsto: <span id="spantempoPrevisto"></span></label>
-            <input type="text" id="tempoPrevisto">
-        </div>
-    </div>
-    
-    
-    <div id="mapa"></div>
-    <div id="sugestoes-lista"></div>
-    <div id="form-container">
-        <form method="post" action="{% url 'adicionar' %}" id="formulario-endereco">
-            {% csrf_token %}
-            <div class="input-group">
-                <input type="text" id="id_endereco" name="endereco" placeholder="Informe o endereço com o numero"> 
-                <input type="hidden" id="endereco-inicio" name="endereco-inicio" placeholder="Informe o endereço com o numero"> 
-                <input type="hidden" id="input-tabela-otimizada" name="input-tabela-otimizada" value="">   
+<div class="container-btn-mapa  fixed-top">
+    <div class="row btn-controle">
+        <div class="col-md-6">
+            <div class="container-resumo d-flex flex-wrap align-items-center justify-content-between">
+                <div class="btn-group" role="group" aria-label="Comandos">
+                    <button type="button" class="btn btn-primary"
+                        onclick="document.getElementById('inputPlanilha').click()">Importar Planilha</button>
+                    <input type="file" id="inputPlanilha"
+                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        style="display:none;">
+                    <button type="button" class="btn btn-primary" onclick="calcularRota()">Otimizar Rota</button>
+                    <button type="button" class="btn btn-primary" onclick="imprimirRota()">Imprimir Rota</button>
+                    <button type="button" class="btn btn-primary" onclick="limparPagina()">Limpar</button>
+                </div>
+                <div id="card-flutuante" class="card bg-light border-primary" style="position: absolute; top: 100px; right: 50px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Resumo da Rota</h5>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Total de paradas:</th>
+                                    <td><span id="spantotalParadas"></span></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Total de KM:</th>
+                                    <td><span id="spantotalKm"></span></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Tempo previsto:</th>
+                                    <td><span id="spantempoPrevisto"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
             </div>
-        </form> 
 
-        <div id="div-enderecos" class="tabela-dinamica">
-            <table border="1" id="tabela-enderecos">
-                <caption>Paradas</caption>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Endereço</th>
-                        <th>Ações</th>
-                    </tr>  
-                </thead>
-            </table>
+            {% if user.is_authenticated %}
+            <div class="container mt-2 fixed-top">
+                <div class="row">
+                    <div class="col">
+                        <span class="navbar-text">Usuário: {{ user.username }} você tem:
+                            {{pagamento.quant_acesso}} créditos,
+                            válidos até: {{ pagamento.valido_ate }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
-        
-        <div id="div-otimizada" class="tabela-dinamica">
-            <table border="1" id="tabela-otimizada" name="tabela-otimizada">
-                <caption>Paradas Otimizada</caption>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Endereço</th>
-                        <th>Parada</th>
-                    </tr>
-                </thead>
-            </table>
+
+    </div>
+</div>
+
+<div id="mapa"></div>
+<div id="sugestoes-lista"></div>
+<div id="form-container">
+    <form method="post" action="{% url 'adicionar' %}" id="formulario-endereco">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="text" id="id_endereco" name="endereco" placeholder="Informe o endereço com o numero">
+            <input type="hidden" id="endereco-inicio" name="endereco-inicio"
+                placeholder="Informe o endereço com o numero">
+            <input type="hidden" id="input-tabela-otimizada" name="input-tabela-otimizada" value="">
         </div>
+    </form>
+
+    <div id="div-enderecos" class="tabela-dinamica">
+        <table border="1" id="tabela-enderecos">
+            <caption>Paradas</caption>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Endereço</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAl4N-KtLVFhvzJ6MuDua1CbN0LJSEBH1U&libraries=places&callback=initMap" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <div id="div-otimizada" class="tabela-dinamica">
+        <table border="1" id="tabela-otimizada" name="tabela-otimizada">
+            <caption>Paradas Otimizada</caption>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Endereço</th>
+                    <th>Parada</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAl4N-KtLVFhvzJ6MuDua1CbN0LJSEBH1U&libraries=places&callback=initMap"
+    async defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
 
 {% endblock %}
-

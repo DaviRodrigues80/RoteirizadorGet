@@ -3,11 +3,32 @@
 {% load static %}
 
 {% block content %}
-<form action="{% url 'enviar_email' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enviar</button>
-</form>
-
-
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{% static 'img/contato01.jpeg' %}" class="img-fluid" alt="Imagem de Contato">
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Entre em Contato</h2>
+                    <p class="card-text">Temos o prazer de ajudar. Entre em contato conosco se tiver alguma dúvida ou precisar de suporte.</p>
+                    <!-- Botão de e-mail -->
+                    <button class="btn btn-email">
+                        <span class="material-symbols-outlined">forward_to_inbox</span>
+                        <a href="mailto:getexpresstransportes@gmail.com">getexpresstransportes@gmail.com</a>
+                    </button>
+        
+                    <!-- Botão do WhatsApp -->
+                    <button class="btn btn-whatsapp">
+                        <img src="{% static 'img/whatsapp.png' %}" alt="zap" style="width: 16px; height: 16px;">&nbsp;
+                        <a href="tel:+5534997077240">(34) 99707-7240</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+       
+    </div>
+</div>
 {% endblock %}

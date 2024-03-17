@@ -1,4 +1,5 @@
-var mapa;
+// var mapa;
+console.log("Estou sendo carregado")
 var autocomplete;
 var marcadores = []; // Array para armazenar os marcadores
 
@@ -87,7 +88,7 @@ function adicionarMarcador(localizacao, endereco) {
         // Inicia o próximo número disponível como o maior ID na tabela
         var numeroMarcador = ultimoIdTabela ? ultimoIdTabela + 1 : 1;
 
-        var marker = new google.maps.Marker({
+        var marker = new google.maps.marker.AdvancedMarkerElement({
             position: localizacao,
             map: mapa,
             title: endereco,
