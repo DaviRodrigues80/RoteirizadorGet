@@ -7,10 +7,13 @@ Cor 4: #35ffa8
 Cor 5: #9900ff
 
 */
+
 /* Definição das cores padrão do site */
 :root {
-    --cor-primaria: #f38f00; /* Laranja Itaú */
-    --cor-secundaria: #023398; /* Azul Itaú */
+    --cor-primaria: #f38f00;
+    /* Laranja Itaú */
+    --cor-secundaria: #023398;
+    /* Azul Itaú */
     --cor-2: #ffa71e;
     --cor-3: #00f48f;
     --cor-4: #35ffa8;
@@ -23,49 +26,113 @@ body {
     color: #000000;
     margin: 0;
     padding: 0;
-    
-    
+
+
 }
 
-.main-container {
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700; /* Se necessário, ajuste o peso da fonte */
+}
+
+.container-menu{
+    margin-top: 100px;
+}
+
+.btn-email, .btn-whatsapp {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
     display: flex;
-    justify-content: center; /* Centraliza o conteúdo na horizontal */
-    margin: 0 10px; /* Adiciona margem de 10px em cada lado */
+    align-items: center;
+}
+
+.btn-email .material-symbols-outlined {
+    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+}
+
+.btn-whatsapp img {
+    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+}
+
+
+.main-container-base {
+    display: flex;
+    justify-content: center;
+    margin: 0 10px;
+    margin-top: 200px;
 }
 
 .menu-superior {
     list-style: none;
-    padding: 10px; /* Ajuste conforme necessário */
+    padding: 10px;
+    /* Ajuste conforme necessário */
     margin: 0;
     display: flex;
     justify-content: space-between;
-    background-color: #0b0d4abc; /* Cor de fundo do menu */
-    border-bottom: 1px solid #ccc; /* Borda inferior do menu */
+    background-color: #0b0d4abc;
+    /* Cor de fundo do menu */
+    border-bottom: 1px solid #ccc;
+    /* Borda inferior do menu */
     position: fixed;
     top: 150px;
     left: 50%;
-    transform: translateX(-50%); /* Centraliza a div */
+    transform: translateX(-50%);
+    /* Centraliza a div */
     width: 50%;
-    z-index: 1000;
     border-radius: 10px;
+    margin-top: 80px;
+
+}
+
+.navbar {
+    position: fixed; /* Garante que a barra de navegação permaneça fixa */
+    width: 100%; /* Garante que a barra de navegação ocupe toda a largura da tela */
+    z-index: 1000; /* Garante que a barra de navegação esteja acima de outros elementos */
+    margin-top: 130px; /* Coloca a barra de navegação no topo da janela */
+    
+}
+.btn-group{
+    z-index: 1000;
+}
+
+
+.logo-container {
+    background-color: #ffffff;
+    margin-top: 0px;
+}
+
+.navbar-text{
+    position: fixed; /* Garante que a barra de navegação permaneça fixa */
+    width: 100%; /* Garante que a barra de navegação ocupe toda a largura da tela */
+    color: var(--cor-secundaria);
+    font-size: 20px;
+    margin-top: 270px;
     
 }
 
 
 .menu-superior li {
     position: relative;
-    z-index: 1000;
+    
     display: inline;
     margin: 0;
     padding: 10px;
 }
 
 .header-container {
-    position: fixed; /* Torna o contêiner fixo no topo da página */
-    top: 0; /* Posiciona o contêiner no topo da página */
-    width: 100%; /* Garante que o contêiner ocupe toda a largura da página */
-    background-color: #ffffff; /* Adiciona um fundo branco para a área do cabeçalho */
-    z-index: 1000; /* Define uma ordem de empilhamento alta para garantir que o cabeçalho fique sobre o conteúdo */
+    position: fixed;
+    /* Torna o contêiner fixo no topo da página */
+    top: 0;
+    /* Posiciona o contêiner no topo da página */
+    width: 100%;
+    /* Garante que o contêiner ocupe toda a largura da página */
+    background-color: #ffffff;
+    /* Adiciona um fundo branco para a área do cabeçalho */
+    
+    /* Define uma ordem de empilhamento alta para garantir que o cabeçalho fique sobre o conteúdo */
     display: flex;
     align-items: center;
 }
@@ -74,15 +141,21 @@ body {
     position: relative;
     top: 0;
     left: 0;
-    margin-right: 10px; /* Opcional: adicione margem para distanciar a logo das bordas */
-    text-align: left; /* Centraliza a logo horizontalmente */
-    padding: 10px; /* Adiciona algum espaço ao redor da logo */
+    margin-right: 30px;
+    /* Opcional: adicione margem para distanciar a logo das bordas */
+    text-align: left;
+    /* Centraliza a logo horizontalmente */
+    padding: 10px;
+    /* Adiciona algum espaço ao redor da logo */
+    
 }
 
 .logo img {
-    width: 100px; /* Defina a largura desejada */
-    height: auto; /* Mantenha a proporção da imagem */
-    
+    width: 100px;
+    /* Defina a largura desejada */
+    height: auto;
+    /* Mantenha a proporção da imagem */
+
 }
 
 .btn-menu {
@@ -110,7 +183,7 @@ header {
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 1000;
+    
     margin-top: 70px;
 }
 
@@ -120,7 +193,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
+   
     display: flex;
     margin-top: 100px;
 }
@@ -156,13 +229,14 @@ nav ul {
 nav ul li {
     display: inline;
     margin-right: 20px;
-    
+
 }
 
 main {
-    margin-top: 150px; /* Para deixar espaço para o cabeçalho fixo */
+    margin-top: 0px;
+    /* Para deixar espaço para o cabeçalho fixo */
     left: auto;
-    
+
 }
 
 /* Estilo para o Slide de imagem - inicio */
@@ -170,9 +244,10 @@ main {
     position: relative;
     overflow: hidden;
     width: 100%;
-    max-width: 100%; /* Ajuste conforme necessário */
+    max-width: 100%;
+    /* Ajuste conforme necessário */
     margin: 0 auto;
-    
+
 }
 
 .carousel input[type="radio"] {
@@ -182,23 +257,32 @@ main {
 
 .slides {
     display: flex;
-    justify-content: center; /* Centraliza os itens horizontalmente */
-    align-items: center; /* Centraliza os itens verticalmente */
-    width: 100%; /* 100% * número de slides */
+    justify-content: center;
+    /* Centraliza os itens horizontalmente */
+    align-items: center;
+    /* Centraliza os itens verticalmente */
+    width: 100%;
+    /* 100% * número de slides */
 }
 
 .slide {
     flex: 1;
-    justify-content: center; /* Centraliza os itens horizontalmente */
-    align-items: center; /* Centraliza os itens verticalmente */
-    width: 100%; /* 100% * número de slides */
+    justify-content: center;
+    /* Centraliza os itens horizontalmente */
+    align-items: center;
+    /* Centraliza os itens verticalmente */
+    width: 100%;
+    /* 100% * número de slides */
 }
 
 /* Estilo para as imagens dentro do carrossel */
 .slide img {
-    width: 1370px; /* Garante que a imagem preencha a largura da div .slide */
-    height: 640px; /* Garante que a imagem preencha a altura da div .slide */
-    object-fit: cover; /* Redimensiona a imagem mantendo a proporção e cobrindo o contêiner */
+    width: 1370px;
+    /* Garante que a imagem preencha a largura da div .slide */
+    height: 640px;
+    /* Garante que a imagem preencha a altura da div .slide */
+    object-fit: cover;
+    /* Redimensiona a imagem mantendo a proporção e cobrindo o contêiner */
 }
 
 
@@ -226,26 +310,33 @@ main {
 .navigation div.active {
     background-color: #000;
 }
+
 /* Estilo para o Slide de imagem -  Fim */
 
 /* Estilos para a seção "about" */
 section {
     background-color: #f2f2f2;
     padding: 20px;
-    margin-bottom: 20px; /* Adiciona margem inferior para separar as seções */
+    margin-bottom: 20px;
+    /* Adiciona margem inferior para separar as seções */
 }
 
 /* Estilos para os parágrafos dentro da seção "about" */
 section p {
-    margin-bottom: 10px; /* Adiciona espaçamento entre os parágrafos */
-    line-height: 1.6; /* Define a altura da linha para melhor legibilidade */
+    margin-bottom: 10px;
+    /* Adiciona espaçamento entre os parágrafos */
+    line-height: 1.6;
+    /* Define a altura da linha para melhor legibilidade */
 }
 
 /* Estilos para o título da seção "about" */
 section h2 {
-    font-size: 24px; /* Define um tamanho de fonte maior para o título */
-    color: #333; /* Define uma cor de texto escura */
-    margin-bottom: 20px; /* Adiciona espaço abaixo do título */
+    font-size: 24px;
+    /* Define um tamanho de fonte maior para o título */
+    color: #333;
+    /* Define uma cor de texto escura */
+    margin-bottom: 20px;
+    /* Adiciona espaço abaixo do título */
 }
 
 /* Estilo para form de contato - ininio*/
@@ -259,8 +350,10 @@ section h2 {
 }
 
 .contact-form img {
-    z-index: -1; /* Coloca a imagem atrás dos outros elementos */
-    opacity: 0.7; /* Define uma opacidade para a imagem de fundo */
+    z-index: -1;
+    /* Coloca a imagem atrás dos outros elementos */
+    opacity: 0.7;
+    /* Define uma opacidade para a imagem de fundo */
     object-fit: cover;
     width: 100%;
     height: auto;
@@ -327,15 +420,26 @@ section h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: auto; /* Ajuste conforme necessário para o tamanho desejado */
+    height: auto;
+    background-color: #06083c;
+    
+    
 }
 
 .login-form {
-    width: auto; /* Ajuste conforme necessário para a largura desejada */
+    width: auto;
+    /* Ajuste conforme necessário para a largura desejada */
     padding: 20px;
-    background-color: #0b0d4abc; /* Adapte conforme necessário para o esquema de cores desejado */
+    background-color: #06083c;
+    /* Adapte conforme necessário para o esquema de cores desejado */
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adapte conforme necessário para a sombra desejada */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Adapte conforme necessário para a sombra desejada */
+    color: #ffffff;
+    margin-top: 100px;
+}
+
+.login-form label{
     color: #ffffff;
 }
 
@@ -347,8 +451,10 @@ section h2 {
     margin: 5px 0;
     border: none;
     border-radius: 5px;
-    background-color: #ffffff; /* Cor de fundo para os campos de entrada */
-    color: #000000; /* Cor do texto nos campos de entrada */
+    background-color: #ffffff;
+    /* Cor de fundo para os campos de entrada */
+    color: #000000;
+    /* Cor do texto nos campos de entrada */
     box-sizing: border-box;
 }
 
@@ -359,8 +465,10 @@ section h2 {
     margin-top: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #4CAF50; /* Cor de fundo para o botão */
-    color: white; /* Cor do texto no botão */
+    background-color: #4CAF50;
+    /* Cor de fundo para o botão */
+    color: white;
+    /* Cor do texto no botão */
     cursor: pointer;
 }
 
@@ -371,15 +479,19 @@ section h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Ajuste conforme necessário para o tamanho desejado */
+    height: 100vh;
+    /* Ajuste conforme necessário para o tamanho desejado */
 }
 
 .signup-form {
-    width: 300px; /* Ajuste conforme necessário para a largura desejada */
+    width: 300px;
+    /* Ajuste conforme necessário para a largura desejada */
     padding: 20px;
-    background-color: #0b0d4abc; /* Adapte conforme necessário para o esquema de cores desejado */
+    background-color: #0b0d4abc;
+    /* Adapte conforme necessário para o esquema de cores desejado */
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adapte conforme necessário para a sombra desejada */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Adapte conforme necessário para a sombra desejada */
     color: #ffffff;
 }
 
@@ -390,37 +502,36 @@ section h2 {
 .resumo {
     list-style: none;
     color: #ffffff;
-    padding: 05px; /* Ajuste conforme necessário */
+    padding: 05px;
+    /* Ajuste conforme necessário */
     margin: 10px;
     display: flex;
     justify-content: space-between;
-    background-color: #686565a1; /* Cor de fundo da div resumo */
-    border: 3px solid #0e17c5; /* Borda inferior da div resumo */
+    background-color: #686565a1;
+    /* Cor de fundo da div resumo */
+    border: 3px solid #0e17c5;
+    /* Borda inferior da div resumo */
     width: 60%;
-    position: relative; /* Alterado para relative */
-    top: 130px; /* Ajuste conforme necessário para deixar abaixo do menu-superior */
-    z-index: 1000;
+    position: relative;
+    /* Alterado para relative */
+    top: 130px;
+    /* Ajuste conforme necessário para deixar abaixo do menu-superior */
+    
     border-radius: 10px;
 }
 
-.input-resumo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 5px; /* Ajuste conforme necessário */
-
-    /* Adiciona negrito aos labels */
-    font-weight: bold;
-}
-
 .input-resumo label {
-    margin-right: 10px; /* Espaçamento entre os labels e os inputs */
+    margin-right: 10px;
+    /* Espaçamento entre os labels e os inputs */
 }
 
 .input-resumo input {
-    border-radius: 5px; /* Cantos arredondados nos inputs */
-    padding: 5px; /* Espaçamento interno dos inputs */
-    width: 100px; /* Ajuste conforme necessário */
+    border-radius: 5px;
+    /* Cantos arredondados nos inputs */
+    padding: 5px;
+    /* Espaçamento interno dos inputs */
+    width: 100px;
+    /* Ajuste conforme necessário */
 }
 
 
@@ -447,7 +558,13 @@ a:hover {
     top: 0;
     left: 0;
     z-index: 1;
-   
+    margin-top: 190px;
+
+}
+
+.btn-controle{
+    background-color: #ffffff;
+    margin-top: 60px;
 }
 
 #form-container {
@@ -462,10 +579,11 @@ a:hover {
     margin-top: 200px;
 }
 
-#div-enderecos  {
+#div-enderecos {
     position: absolute;
     top: 80px;
-    left: 0px; /* Ajuste a posição à esquerda conforme necessário */
+    left: 0px;
+    /* Ajuste a posição à esquerda conforme necessário */
     z-index: 1;
     background-color: rgba(149, 149, 149);
     padding: 10px;
@@ -473,15 +591,18 @@ a:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-height: 250px;
     overflow-y: auto;
-    overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
-    width: calc(100% - 20px); /* Leva em consideração o padding de 10px em cada lado */
+    overflow-x: auto;
+    /* Adiciona uma barra de rolagem horizontal quando necessário */
+    width: calc(100% - 20px);
+    /* Leva em consideração o padding de 10px em cada lado */
     margin-top: 50px;
 }
 
 #div-otimizada {
     position: absolute;
     top: 80px;
-    left: 0px; /* Ajuste a posição à esquerda conforme necessário */
+    left: 0px;
+    /* Ajuste a posição à esquerda conforme necessário */
     z-index: 1;
     background-color: rgb(149, 149, 149);
     padding: 10px;
@@ -489,8 +610,10 @@ a:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-height: 250px;
     overflow-y: auto;
-    overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
-    width: calc(100% - 20px); /* Leva em consideração o padding de 10px em cada lado */
+    overflow-x: auto;
+    /* Adiciona uma barra de rolagem horizontal quando necessário */
+    width: calc(100% - 20px);
+    /* Leva em consideração o padding de 10px em cada lado */
     margin-top: 325px;
 }
 
@@ -540,7 +663,7 @@ a:hover {
     color: rgb(0, 0, 0);
     border-radius: 5px;
     border: none;
-        
+
 }
 
 #tabela-otimizada th {
@@ -548,8 +671,8 @@ a:hover {
     color: rgb(255, 255, 255);
     border-radius: 5px;
     border: 1px;
-    
-    
+
+
 }
 
 #tabela-enderecos caption {
@@ -619,9 +742,9 @@ a:hover {
 .planos-container {
     display: flex;
     justify-content: space-around;
-    margin-top: 230px;
-    
-    
+    margin-top: 130px;
+
+
 }
 
 .plano {
@@ -630,8 +753,9 @@ a:hover {
     border-radius: 8px;
     text-align: center;
     width: 30%;
-    background-color: #f38f00;
+    background-color: #10f300;
     color: #ffffff;
+    
 }
 
 /* Estilos para os botões */
@@ -659,7 +783,7 @@ a:hover {
 
 .plano-descricao {
     font-size: 16px;
-    color: #fff;
+    color: #000000;
     font-weight: bold;
 }
 
@@ -675,60 +799,70 @@ a:hover {
 
 /* Estilos para o formulário de pagamento */
 .container {
-    max-width: 500px;
+    max-width: 100%;
     margin: auto;
     padding: 20px;
-  }
-  
-  .payment-form {
+    background-color: #ffffff;
+   
+    
+}
+
+.container-btn-mapa{
+    margin-top: 150px;
+    padding: 20px;
+    z-index: 100;
+
+} 
+.payment-form {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-group {
+    margin-top: 200px;
+}
+
+.form-group {
     margin-bottom: 20px;
-  }
-  
-  label {
+}
+
+label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-  }
-  
-  input[type="text"],
-  input[type="date"] {
+}
+
+input[type="text"],
+input[type="date"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
-  
-  select {
+}
+
+select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
-  
-  .btn-primary {
+}
+
+.btn-primary {
     background-color: #007bff;
     color: #fff;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  .btn-primary:hover {
+}
+
+.btn-primary:hover {
     background-color: #0056b3;
-  }
-  
+}
+
+
 
 
 /*Estilo para o Form Pagamento - FIM*/
-
 
 
 /* EStilo para a tabela - Inicio */
@@ -736,15 +870,34 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 .search-container {
-    margin-bottom: 20px; /* Adicione espaçamento entre o campo de busca e a tabela */
+    margin-bottom: 20px;
+    margin-top: 100px;
+    /* Adicione espaçamento entre o campo de busca e a tabela */
 }
+
+.pagamento-container{
+    margin-bottom: 20px;
+    margin-top: 0px;
+}
+.lista_pagamento-container{
+    margin-bottom: 20px;
+    margin-top: 130px;
+}
+
+.usuarios-container{
+    margin-bottom: 20px;
+    margin-top: 100px;
+}
+
 
 .table-container {
     width: 100%; /* Garante que a tabela ocupe toda a largura da div */
+    margin-top: 50px;
+    
 }
 
 table {

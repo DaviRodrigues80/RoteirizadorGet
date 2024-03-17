@@ -1,5 +1,5 @@
-// var mapa;
 console.log("Estou sendo carregado")
+var mapa;
 var autocomplete;
 var marcadores = []; // Array para armazenar os marcadores
 
@@ -9,7 +9,7 @@ function initMap() {
         // Tenta obter a localização do usuário...
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
-                
+
                 // Obtém as coordenadas da localização do usuário...
                 var userLocation = {
                     lat: position.coords.latitude,
@@ -17,14 +17,14 @@ function initMap() {
                 };
 
                 // Configurações do mapa
-                    
-                
+
+
 
                 // Cria o mapa usando Google Maps e centraliza na localização do usuário...
                 mapa = new google.maps.Map(document.getElementById('mapa'), {
                     center: userLocation,
                     zoom: 14, // Ajuste o nível de zoom conforme necessário
-                
+
                     // Configurações do estilo do mapa para desativar os marcadores padrão
                     styles: [
                         {
@@ -88,7 +88,7 @@ function adicionarMarcador(localizacao, endereco) {
         // Inicia o próximo número disponível como o maior ID na tabela
         var numeroMarcador = ultimoIdTabela ? ultimoIdTabela + 1 : 1;
 
-        var marker = new google.maps.marker.AdvancedMarkerElement({
+        var marker = new google.maps.Marker({
             position: localizacao,
             map: mapa,
             title: endereco,
@@ -115,7 +115,7 @@ function adicionarMarcador(localizacao, endereco) {
         proximoNumeroMarcador = numeroMarcador + 1;
 
         // Obter números atuais dos marcadores em um array
-        var numerosMarcadoresAtuais = marcadores.map(function(marcador) {
+        var numerosMarcadoresAtuais = marcadores.map(function (marcador) {
             return { id: marcador.id, idEndereco: marcador.idEndereco };
         });
 
@@ -156,39 +156,39 @@ function atualizarNumeracaoMarcadores() {
         document.getElementById('tabela-enderecos').rows[i + 1].cells[0].innerText = novoIdMarcador;
     }
 }
-  
- 
+
+
 
 // Função para excluir um endereço
 function excluirEndereco(valor) {
-   console.log(`linha-203: Excluindo endereço com ID: ${valor}`);
-    
-   // Encontrar o índice do marcador com base no valor do ID
-   var indiceMarcador = marcadores.findIndex(function (marcador) {
-       return marcador.id == valor;
-   });
+    console.log(`linha-203: Excluindo endereço com ID: ${valor}`);
 
-   // Verifica se o marcador com o ID especificado foi encontrado
-   if (indiceMarcador !== -1) {
-       // Remove o marcador do mapa
-       var marcadorExcluir = marcadores[indiceMarcador];
-       if (marcadorExcluir) {
-           marcadorExcluir.setMap(null);
-       }
-       // Remove o marcador do array
-       marcadores.splice(indiceMarcador, 1);
-       // Atualiza a tabela de endereços
-       atualizarTabelaEnderecos();
+    // Encontrar o índice do marcador com base no valor do ID
+    var indiceMarcador = marcadores.findIndex(function (marcador) {
+        return marcador.id == valor;
+    });
 
-       // Atualiza a numeração dos marcadores restantes
-       atualizarNumeracaoMarcadores();
-   } else {
-       // O marcador com o ID especificado não foi encontrado
-       console.log(`O marcador com o ID ${valor} não foi encontrado.`);
+    // Verifica se o marcador com o ID especificado foi encontrado
+    if (indiceMarcador !== -1) {
+        // Remove o marcador do mapa
+        var marcadorExcluir = marcadores[indiceMarcador];
+        if (marcadorExcluir) {
+            marcadorExcluir.setMap(null);
+        }
+        // Remove o marcador do array
+        marcadores.splice(indiceMarcador, 1);
+        // Atualiza a tabela de endereços
+        atualizarTabelaEnderecos();
+
+        // Atualiza a numeração dos marcadores restantes
+        atualizarNumeracaoMarcadores();
+    } else {
+        // O marcador com o ID especificado não foi encontrado
+        console.log(`O marcador com o ID ${valor} não foi encontrado.`);
     }
 }
-  
-  
+
+
 // Função para atualizar a tabela de endereços após a exclusão de um marcador
 function atualizarTabelaEnderecos() {
     var tabela = document.getElementById('tabela-enderecos');
@@ -285,7 +285,7 @@ function excluirEndereco(valor) {
 function obterMaiorIdNaTabela() {
     var tabela = document.getElementById('tabela-enderecos');
     var linhas = tabela.getElementsByTagName('tr');
-    
+
     var maiorId = 0;
 
     // Verifica se há linhas na tabela
@@ -308,7 +308,7 @@ function obterMaiorIdNaTabela() {
 function obterUltimoIdNaTabela() {
     var tabela = document.getElementById('tabela-enderecos');
     var linhas = tabela.getElementsByTagName('tr');
-    
+
     // Verifica se há linhas na tabela
     if (linhas.length > 0) {
         var ultimaLinha = linhas[linhas.length - 1];
@@ -365,7 +365,7 @@ async function buscarEndereco() {
         await carregarAPIAutocompletar();
         var enderecoInput = document.getElementById('id_endereco').value;
         var predictions = await obterSugestoesEndereco(enderecoInput);
-        
+
         if (predictions.length > 0) {
             exibirListaSugestoes(predictions);
         } else {
@@ -412,7 +412,7 @@ async function obterSugestoesEndereco(input) {
         );
     });
 }
-
+/*
 // Verificar se tem saldo/credito para criar rota -  inicio
 
 // verificar_saldo.js
@@ -440,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         xhr.send();
     });
-});
+});*/
 
 // Verificar se tem saldo/credito para criar rota - fim
 
@@ -515,15 +515,16 @@ window.calcularRota = function () {
             var segundosComParadas = tempoTotalComParadas % 60;
 
             // Atualizar os valores na interface do usuário
-            document.getElementById('totalKm').value = distanciaTotalKm.toFixed(2);
-            document.getElementById('totalParadas').value = marcadores.length;
-            document.getElementById('tempoPrevisto').value = minutosComParadas + ' min ' + segundosComParadas + ' seg';
+            document.getElementById('spantotalKm').innerText = distanciaTotalKm.toFixed(2);
+            document.getElementById('spantotalParadas').innerText = marcadores.length;
+            document.getElementById('spantempoPrevisto').innerText = minutosComParadas + ' min ' + segundosComParadas + ' seg';
+
 
             // Exemplo de uso
             var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
             var ValoresTabelaOtimizada = obterValoresTabelaOtimizada();
             console.log('linha-347:  O valor da var é:', ValoresTabelaOtimizada)
-            
+
             // Solicitação AJAX para atualizar os créditos do usuário
             fetch('/atualizar_creditos/', {
                 method: 'POST',
@@ -533,16 +534,16 @@ window.calcularRota = function () {
                 },
                 body: JSON.stringify({})
             })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Créditos do usuário atualizados com sucesso!');
-                } else {
-                    console.error('Erro ao atualizar créditos do usuário');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao atualizar créditos do usuário:', error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Créditos do usuário atualizados com sucesso!');
+                    } else {
+                        console.error('Erro ao atualizar créditos do usuário');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar créditos do usuário:', error);
+                });
         } else {
             alert('Não foi possível calcular a rota: ' + status);
         }
@@ -597,18 +598,18 @@ function enviarDadosPagamento() {
 
 // listar pagamentos por usuarios - inicio
 
-$(document).ready(function() {
-    $('#usuario-form').submit(function(e) {
+$(document).ready(function () {
+    $('#usuario-form').submit(function (e) {
         e.preventDefault();
         var usuarioId = $('#usuario-select').val();
         $.ajax({
             url: '/buscar_pagamentos/',
             type: 'GET',
-            data: {'usuario_id': usuarioId},
-            success: function(response) {
+            data: { 'usuario_id': usuarioId },
+            success: function (response) {
                 $('#pagamentos-table').html(response.pagamentos_html);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error(xhr.responseText);
                 alert('Ocorreu um erro ao buscar os pagamentos.');
             }
@@ -623,7 +624,7 @@ function getCSRFToken() {
     var name = "csrftoken=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var cookieArray = decodedCookie.split(';');
-    for(var i = 0; i < cookieArray.length; i++) {
+    for (var i = 0; i < cookieArray.length; i++) {
         var cookie = cookieArray[i].trim();
         if (cookie.indexOf(name) == 0) {
             return cookie.substring(name.length, cookie.length);
@@ -638,11 +639,11 @@ function copiarCodigo() {
     var chavePix = document.getElementById("chave-pix").value;
     // Copiar a chave PIX para a área de transferência
     navigator.clipboard.writeText(chavePix)
-        .then(function() {
+        .then(function () {
             // Exibir um alerta de sucesso
             alert("Chave PIX copiada com sucesso, cole no seu aplicativo do banco para efetuar o pagamento: " + chavePix);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             // Exibir um alerta de erro, caso ocorra algum problema ao copiar
             alert("Erro ao copiar a chave PIX: " + error);
         });
@@ -685,8 +686,8 @@ function copiarCodigo() {
     xhr.open("POST", "/pagamento/", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("X-CSRFToken", csrftoken); // Incluir o token CSRF no cabeçalho da solicitação
-    
-    xhr.onreadystatechange = function() {
+
+    xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
@@ -705,7 +706,7 @@ function copiarCodigo() {
     // Enviar os dados para o backend
     xhr.send(JSON.stringify(dados));
 }
-
+/*
 // Gerador de codigo para pagamento
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('gerar-codigo-pagamento').addEventListener('click', function() {
@@ -745,7 +746,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var validoAte = ano + '-' + (mes < 10 ? '0' : '') + mes + '-' + (dia < 10 ? '0' : '') + dia;
         validoAteInput.value = validoAte;
     }
-});
+});*/
 
 // Função para atualizar marcadores
 function atualizarMarcador(marker, indiceLinha, endereco) {
@@ -800,11 +801,11 @@ function atualizarTabelaSequencia(directionsResult) {
         // Obter os valores da tabela de endereços
         var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
 
-        
+
 
         // Atualizar a tabela com a sequência otimizada
         var tabelaEnderecosOtimizada = document.getElementById('tabela-otimizada');
-        
+
         for (var i = 0; i < ordemOtimizada.length; i++) {
             var index = ordemOtimizada[i];
             var row = tabelaEnderecosOtimizada.insertRow(-1);
@@ -857,15 +858,15 @@ function obterValoresTabelaOtimizada() {
             parada: parada
         });
     }
-    
+
     return valores;
 }
 
 function imprimirRota() {
     // Obtenha a referência à div resumo
-    var totalParadas = document.getElementById('totalParadas').value;
-    var totalKm = document.getElementById('totalKm').value;
-    var tempoPrevisto = document.getElementById('tempoPrevisto').value;
+    var totalParadas = document.getElementById('spantotalParadas').innerText;
+    var totalKm = document.getElementById('spantotalKm').innerText;
+    var tempoPrevisto = document.getElementById('spantempoPrevisto').innerText;
 
     // Obtenha a referência à div
     var tabela = obterValoresTabelaOtimizada();
@@ -982,15 +983,17 @@ function atualizarResumo() {
         },
         success: function (data) {
             // Atualize os valores na interface do usuário
-            $('#totalParadas').text(data.totalParadas);
-            $('#totalKm').text(data.totalKm);
-            $('#tempoPrevisto').text(data.tempoPrevisto);
+            $('#spantotalParadas').html(data.totalParadas);
+            $('#spantotalKm').html(data.totalKm);
+            $('#spantempoPrevisto').html(data.tempoPrevisto);
         },
         error: function () {
             console.log('Erro ao calcular o resumo.');
         }
     });
 }
+
+
 
 
 // Importação de endereço da planilha - inicio
@@ -1053,17 +1056,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function encontrarColunaEndereco(dados) {
         const possiveisCabecalhosEndereco = ['ENDEREÇO', 'Endereço', 'endereço', 'ENDERECO', 'Endereco', 'endereco', 'logradouro', 'rua', 'endereco_completo', 'endereço_completo'];
-    
+
         for (const linha of dados) {
             for (const cabecalho in linha) {
                 const valor = linha[cabecalho];
-    
+
                 if (typeof valor === 'string' && possiveisCabecalhosEndereco.some(keyword => cabecalho.toLowerCase().includes(keyword) || valor.toLowerCase().includes(keyword))) {
                     return cabecalho;
                 }
             }
         }
-    
+
         return null;
     }
 
@@ -1142,7 +1145,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Slide de imagens do Site - Inicio
-$(document).ready(function() {
+$(document).ready(function () {
     var slideIndex = 1;
     showSlide(slideIndex);
 
@@ -1160,18 +1163,18 @@ $(document).ready(function() {
 
         slides.hide();
         dots.removeClass("active");
-        
+
         slides.eq(slideIndex - 1).show();
         dots.eq(slideIndex - 1).addClass("active");
     }
 
-    $(".auto-btn").click(function() {
+    $(".auto-btn").click(function () {
         slideIndex = $(this).index() + 1;
         showSlide(slideIndex);
     });
 
     // Adiciona funcionalidade de transição automática
-    var slideInterval = setInterval(function() {
+    var slideInterval = setInterval(function () {
         slideIndex++;
         if (slideIndex > $(".slide").length) {
             slideIndex = 1;
@@ -1193,3 +1196,34 @@ function limparPagina() {
 
 
 // Integração para PAGAMENTO - FIM
+
+// Função para alternar a visibilidade da barra lateral
+$(document).ready(function () {
+    $('.sidebar-toggle').on('click', function () {
+        $('.sidebar').toggleClass('active');
+    });
+});
+
+// Função para Card - Flutuante
+document.addEventListener("DOMContentLoaded", function() {
+    var card = document.getElementById("card-flutuante");
+    var offsetX, offsetY;
+    var dragging = false;
+
+    card.addEventListener("mousedown", function(e) {
+        dragging = true;
+        offsetX = e.clientX - card.getBoundingClientRect().left;
+        offsetY = e.clientY - card.getBoundingClientRect().top;
+    });
+
+    document.addEventListener("mousemove", function(e) {
+        if (dragging) {
+            card.style.left = (e.clientX - offsetX) + "px";
+            card.style.top = (e.clientY - offsetY) + "px";
+        }
+    });
+
+    document.addEventListener("mouseup", function() {
+        dragging = false;
+    });
+});
