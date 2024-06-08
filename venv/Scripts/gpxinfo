@@ -1,4 +1,4 @@
-#!D:\roteirizacao_projeto\venv\Scripts\python.exe
+#!E:\RoteirizadorGet\venv\Scripts\python.exe
 
 """
 Command line utility to extract basic statistics from gpx file(s)
