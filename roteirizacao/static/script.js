@@ -1141,6 +1141,30 @@ document.addEventListener('DOMContentLoaded', function () {
             var valoresTabelaEnderecos = obterValoresTabelaEnderecos();
 
             document.getElementById('sugestoes-lista').innerHTML = '';
+
+            // Adiciona o endereço à lista de endereços
+            var dados = { endereco: endereco };
+            console.log(dados)
+            fetch('/gerar_arquivo_gpx/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    // Verifica se a resposta foi bem-sucedida
+                    if (response.ok) {
+                        console.log('Arquivo GPX gerado com sucesso!');
+                        // Aqui você pode redirecionar o usuário para baixar o arquivo GPX, se desejado
+                    } else {
+                        console.error('Erro ao gerar arquivo GPX');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao gerar arquivo GPX:', error);
+                });
         }
     }
 });
@@ -1209,25 +1233,106 @@ $(document).ready(function () {
 });
 
 // Função para Card - Flutuante
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     var card = document.getElementById("card-flutuante");
     var offsetX, offsetY;
     var dragging = false;
 
-    card.addEventListener("mousedown", function(e) {
+    card.addEventListener("mousedown", function (e) {
         dragging = true;
         offsetX = e.clientX - card.getBoundingClientRect().left;
         offsetY = e.clientY - card.getBoundingClientRect().top;
     });
 
-    document.addEventListener("mousemove", function(e) {
+    document.addEventListener("mousemove", function (e) {
         if (dragging) {
             card.style.left = (e.clientX - offsetX) + "px";
             card.style.top = (e.clientY - offsetY) + "px";
         }
     });
 
-    document.addEventListener("mouseup", function() {
+    document.addEventListener("mouseup", function () {
         dragging = false;
     });
 });
+
+
+// Função para extrair a rota otimizada e gerar arquivo gpx
+function extrairDadosRota() {
+    var tabela = document.getElementById('tabela-otimizada');
+    var linhas = tabela.getElementsByTagName('tr');
+    var dadosRota = [];
+
+    for (var i = 1; i < linhas.length; i++) { // Começamos de 1 para ignorar a linha do cabeçalho
+        var colunas = linhas[i].getElementsByTagName('td');
+        var id = colunas[0].innerText;
+        var endereco = colunas[1].innerText;
+        var parada = colunas[2].innerText;
+
+        dadosRota.push({
+            id: id,
+            endereco: endereco,
+            parada: parada
+        });
+    }
+
+    return dadosRota;
+}
+
+// Exemplo de uso
+var dadosRota = extrairDadosRota();
+console.log(dadosRota);
+
+
+function gerarArquivoGPX() {
+    // Array para armazenar os dados de endereço
+    var enderecos = [];
+
+    // Iterar sobre os marcadores e extrair os dados de endereço
+    marcadores.forEach(function(marcador) {
+        var endereco = {
+            cep: marcador.cep,
+            logradouro: marcador.logradouro,
+            bairro: marcador.bairro,
+            cidade: marcador.cidade,
+            numero: marcador.numero,
+            estado: marcador.estado,
+            latitude: marcador.position.lat(),
+            longitude: marcador.position.lng()
+        };
+        enderecos.push(endereco);
+    });
+
+    // Enviar os dados de endereço para o servidor Django
+    fetch('/gerar_arquivo_gpx/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()  // Certifique-se de que a função getCSRFToken() esteja definida
+        },
+        body: JSON.stringify(enderecos)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.blob();  // Retorna um blob (arquivo binário)
+        } else {
+            console.error('Erro ao gerar arquivo GPX');
+        }
+    })
+    .then(blob => {
+        // Cria um objeto URL para o blob
+        var url = URL.createObjectURL(blob);
+
+        // Cria um link para download do arquivo GPX
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'rota.gpx';
+        a.click();
+
+        // Revoga o objeto URL para liberar a memória
+        URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+        console.error('Erro ao gerar arquivo GPX:', error);
+    });
+}

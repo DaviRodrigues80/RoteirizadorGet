@@ -1231,3 +1231,31 @@ document.addEventListener("DOMContentLoaded", function() {
         dragging = false;
     });
 });
+
+
+
+// Função para extrair a rota otimizada e gerar arquivo gpx
+function extrairDadosRota() {
+    var tabela = document.getElementById('tabela-otimizada');
+    var linhas = tabela.getElementsByTagName('tr');
+    var dadosRota = [];
+
+    for (var i = 1; i < linhas.length; i++) { // Começamos de 1 para ignorar a linha do cabeçalho
+        var colunas = linhas[i].getElementsByTagName('td');
+        var id = colunas[0].innerText;
+        var endereco = colunas[1].innerText;
+        var parada = colunas[2].innerText;
+
+        dadosRota.push({
+            id: id,
+            endereco: endereco,
+            parada: parada
+        });
+    }
+
+    return dadosRota;
+}
+
+// Exemplo de uso
+var dadosRota = extrairDadosRota();
+console.log(dadosRota);

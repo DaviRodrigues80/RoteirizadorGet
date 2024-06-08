@@ -35,6 +35,9 @@ from .forms import ContatoForm, CustomUserCreationForm, CustomUserForm, Pagament
 from django.db.models import F
 from icecream import ic
 from django.contrib.auth.hashers import make_password
+import gpxpy
+import gpxpy.gpx
+from geopy.geocoders import Nominatim
 
 
 def home(request):
@@ -554,3 +557,28 @@ def atualizar_senha(request):
             return redirect('login')
     else:
         return redirect('login')
+    
+
+def gerar_arquivo_gpx_view(request):
+    # Obter os dados de endereço da requisição POST
+    dados_endereco = request.POST.getlist('endereco')
+
+    # Processar os dados de endereço e gerar o arquivo GPX
+    gpx = gpxpy.gpx.GPX()
+    gpx_track = gpxpy.gpx.GPXTrack()
+    gpx.tracks.append(gpx_track)
+    gpx_segment = gpxpy.gpx.GPXTrackSegment()
+    gpx_track.segments.append(gpx_segment)
+
+    for endereco in dados_endereco:
+        latitude, longitude = geocodificar_endereco(endereco)
+        if latitude is not None and longitude is not None:
+            gpx_segment.points.append(gpxpy.gpx.GPXTrackPoint(latitude=latitude, longitude=longitude))
+        else:
+            print("Coordenadas não encontradas para o endereço:", endereco)
+
+    # Renderizar o arquivo GPX como uma resposta HTTP
+    response = HttpResponse(content_type='application/gpx+xml')
+    response['Content-Disposition'] = 'attachment; filename="rota.gpx"'
+    response.write(gpx.to_xml())
+    return response

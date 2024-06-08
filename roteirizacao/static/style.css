@@ -8,6 +8,42 @@ Cor 5: #9900ff
 
 */
 
+/* Adicione este CSS em seu arquivo style.css */
+
+/* Estilos para dispositivos móveis */
+@media only screen and (max-width: 768px) {
+    /* Estilos para a navegação */
+    .navbar-collapse {
+        background-color: #fff; /* Altera a cor do plano de fundo */
+        padding: 1rem; /* Adiciona um espaçamento interno */
+    }
+    .navbar-collapse.collapse-vertical {
+        max-height: calc(100vh - 56px); /* Ajustar altura conforme necessário */
+      }
+
+    .navbar-toggler {
+        color: #000; /* Altera a cor do ícone do botão de alternância */
+    }
+    .navbar-nav {
+        flex-direction: column; /* Altera a direção do flex para empilhar verticalmente */
+        margin-top: 1rem; /* Adiciona um espaço superior */
+    }
+    .nav-item {
+        margin-bottom: 0.5rem; /* Adiciona um espaço entre os itens de navegação */
+    }
+    .nav-link {
+        padding: 0.5rem; /* Adiciona um espaçamento interno para os links */
+    }
+}
+
+/* Estilos para dispositivos menores */
+@media only screen and (max-width: 576px) {
+    .logo-container {
+        display: none; /* Oculta a div de logo */
+    }
+}
+
+
 /* Definição das cores padrão do site */
 :root {
     --cor-primaria: #f38f00;

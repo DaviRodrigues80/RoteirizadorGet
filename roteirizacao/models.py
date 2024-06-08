@@ -63,9 +63,12 @@ class Endereco(models.Model):
     bairro = models.CharField(max_length=255)
     cidade = models.CharField(max_length=255)
     numero = models.CharField(max_length=10)
+    estado = models.CharField(max_length=50)
     latitude = models.FloatField(default=0)
     longitude = models.FloatField(default=0)
 
+    def __str__(self):
+        return f"{self.cep}, {self.logradouro}, {self.bairro}, {self.cidade}, {self.numero}, {self.estado}, {self.latitude}, {self.longitude} "
 
 # Tabela Viagem
 class Viagem(models.Model):
