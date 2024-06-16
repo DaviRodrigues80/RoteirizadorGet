@@ -29,10 +29,10 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'web-production-fdb3.up.railway.app',
     '127.0.0.1',
-    'https://web-production-fdb3.up.railway.app',
-    'https://web-production-fdb3.up.railway.app/login/',
+    'https://getoptimiza.up.railway.app',
+    'https://getoptimiza.up.railway.app/login/',
 ]
-CSRF_TRUSTED_ORIGINS =['https://web-production-fdb3.up.railway.app']
+CSRF_TRUSTED_ORIGINS =['https://getoptimiza.up.railway.app']
 
 # Application definition
 
