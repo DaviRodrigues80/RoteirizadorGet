@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-e5)+w&8cc6sthk6j(*x&wgwl1adukez(qg^x-&77$$gm)=j4-e
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'web-production-fdb3.up.railway.app',
+    'getoptimiza.up.railway.app',
     '127.0.0.1',
     'https://getoptimiza.up.railway.app',
     'https://getoptimiza.up.railway.app/login/',
